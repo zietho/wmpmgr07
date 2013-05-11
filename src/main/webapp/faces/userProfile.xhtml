@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="template.xhtml">
+		<ui:define name="content">
+			<script src="http://maps.google.com/maps/api/js?sensor=false"
+				type="text/javascript" />
+			<script type="text/javascript"
+				src="../resources/javascript/mapCodeSovtivityPoint.js" />
+			<f:view>
+				<p:layout id="top" style="min-width:400px;min-height:600px;" fullpage="true">
+					<p:layoutUnit position="west" resizable="true" size="230"
+						minSize="40" maxSize="230" id="first">
+						<!--  Side Navigation -->
+						<ul id="sideNavigation">
+							<li><h:outputLink value="userProfile.xhtml">
+									<h:outputText value="Daten" />
+								</h:outputLink></li>
+							<li><h:outputLink value="userProfilePointsOfInterests.xhtml">
+									<h:outputText value="Orte" />
+								</h:outputLink></li>
+							<!-- <li><h:outputLink value="userProfileConnections.xhtml">
+									<h:outputText value="Verbindungen" />
+								</h:outputLink></li> -->
+						</ul>
+					</p:layoutUnit>
+					<!--  Contents -->
+					<p:layoutUnit position="center">
+						<center>
+
+							<h:outputLabel id="greeting" value="#{userMBean.getGreeting()}" />
+
+						</center>
+						<h1>
+							<h:outputText value="User Profil ändern" />
+						</h1>
+
+						<div>
+							<h:form id="panel1Form">
+								<h:outputLabel value="User Daten ändern  (auf Wert klicken um ihn zu ändern)" />
+
+
+								<p:panelGrid id="panel1" columns="2">
+
+									<!-- Vorname -->
+									<h:outputLabel for="firstname" value="Vorname:" />
+
+									<p:inplace editor="true">
+										<p:inputText id="firstname" style="width:15em"
+											value="#{changeUserMBean.firstname}" required="true"
+											requiredMessage="Wir benötigen deinen Vornamen."
+											label="Vorname">
+											<f:validateLength minimum="2" />
+										</p:inputText>
+									</p:inplace>
+									<!-- <p:message for="firstname" /> -->
+
+
+									<!-- Nachname -->
+									<h:outputLabel for="lastname" value="Nachname:" />
+									<p:inplace editor="true">
+										<p:inputText id="lastname" value="#{changeUserMBean.lastname}"
+											style="width:15em" required="true"
+											requiredMessage="Wir benötigen deinen Nachnamen."
+											label="Nachname">
+											<f:validateLength minimum="2" />
+										</p:inputText>
+									</p:inplace>
+									<!-- <p:message for="lastname" /> -->
+
+									<!-- Nickname 
+									<h:outputLabel for="nickname" value="Username:" />
+									<p:inplace editor="true">
+										<p:inputText id="nickname" value="#{changeUserMBean.nickname}"
+											style="width:15em" required="true"
+											requiredMessage="Wir soll dein Username lauten?"
+											label="Nickname">
+											<f:validateLength minimum="2" />
+										</p:inputText>
+									</p:inplace> -->
+									<!-- <p:message for="nickname" /> -->
+
+									<!-- Mail -->
+									<h:outputLabel for="email" value="EMail-Adresse:" />
+									<p:inplace editor="true">
+										<p:inputText id="email" value="#{changeUserMBean.email}"
+											style="width:15em" required="true"
+											requiredMessage="Wir benötigen eine Email Adresse."
+											validatorMessage="ungültige Email">
+											<f:validateRegex
+												pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)" />
+										</p:inputText>
+									</p:inplace>
+									<!-- <p:message for="email" /> -->
+
+								</p:panelGrid>
+								<p></p>
+								<p:commandButton id="submitData"
+									update="panel1, :greeting, :toolbar:menuButton"
+									value="Daten übernehmen" icon="ui-icon-check"
+									action="#{changeUserMBean.submitUserData}" />
+							</h:form>
+							<p></p>
+							<br></br>
+							<p></p>
+							
+							<h:form id="panel2Form">
+								<h:outputLabel value="Passwort ändern" />
+								<p:panelGrid id="panel2" columns="2">
+
+									<!-- Passwort Neu 1 -->
+									<h:outputLabel for="password" value="Neues Passwort:" />
+									<p:password id="password"
+										value="#{changeUserMBean.newPassword}"
+										requiredMessage="Du brauchst ein Passwort."
+										match="passwordCheck" label="Password 1" required="true">
+										<f:validateLength minimum="4" />
+									</p:password>
+									<!-- <p:message for="password" /> -->
+
+									<!-- Passwort Neu 2 -->
+									<h:outputLabel for="passwordCheck"
+										value="Neues Passwort wiederholen:" />
+									<p:password id="passwordCheck"
+										value="#{changeUserMBean.newPassword}"
+										requiredMessage="Bitte wiederhol das Passwort."
+										label="Password 2" required="true" />
+									<!-- <p:message for="passwordCheck" /> -->
+
+								</p:panelGrid>
+								<p></p>
+								<p:commandButton id="submitPassword" update="panel2"
+									value="Passwort übernehmen" icon="ui-icon-check"
+									action="#{changeUserMBean.submitPassword}" />
+							</h:form>
+							
+							<br/>
+							
+							<h:form id="panel3Form">
+							
+								<h:outputLabel for="categoryList" value="Favorisierte Kategorien auswählen" />
+
+								<p:selectManyCheckbox id="categoryList" value="#{changeUserMBean.selectedCategories}"
+									layout="pageDirection">
+									<f:selectItems value="#{changeUserMBean.categories}" />
+								</p:selectManyCheckbox>
+								
+								<p:commandButton id="submitCategories"
+									value="Kategorien übernehmen" icon="ui-icon-check"
+									action="#{changeUserMBean.submitCategories}" />
+							</h:form>
+							
+							<br/>
+							
+							<h:form id="fileform" enctype="multipart/form-data">
+							<h:panelGrid columns="1">
+								<h:outputText value="Bild" styleClass="formElementHeadline" />
+								<h:outputText
+									value="Laden Sie hier ein Bild von Ihnen hoch  " />
+								<p:fileUpload
+									fileUploadListener="#{changeUserMBean.handleFileUpload}"
+									mode="advanced"
+									sizeLimit="5000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+							</h:panelGrid>
+						</h:form>
+						</div>
+					</p:layoutUnit>
+				</p:layout>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

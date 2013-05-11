@@ -1,0 +1,390 @@
+html{
+	margin:0;
+padding:0;
+}
+
+body {
+	margin:0;
+	background-image: url(../resources/img/bg.png);
+	background-repeat:repeat-x repeat-y;
+}
+
+
+/* NAVIGATION */
+
+#navigation{
+	
+	text-align: right;
+	margin:0px;
+	padding:0px;
+}
+
+#navigation div{
+	height:30px;
+}
+
+
+#navigation ul{
+	margin:0px;
+	padding:0px;
+	height:30px;
+	text-align: right;
+	list-style: none;
+}
+
+
+#navigation ul li{
+	display: inline;
+}
+
+
+/* FORMS */
+
+
+.formBlock form {
+	display:block;
+	overflow: auto;
+}
+
+.formBlock > fieldset > div > label {
+	float:left;
+	display:block;
+	width: 9em;
+	clear:both;	
+	margin-bottom:5px;
+}
+
+.formBlock input, textarea, select {
+	clear:both;
+	display:block;
+	float:left;
+	width: 50em;
+}
+
+#accPanMap\:popupButtonCal input {
+	width: 22em;
+}
+
+.formBlock fieldset > div{
+	margin-top:20px;
+	clear:both;
+	float:left;
+}
+
+.formBlock fieldset {
+	clear:both;
+	display:block;
+	border:0px;
+}
+
+.formBlock fieldset legend{
+	margin:25px 0 10px 0;
+}
+
+.formBlock .labelDescription{
+	clear:both;
+	display:block;
+	margin-bottom:10px;
+}
+
+
+.clear:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#counter{
+	clear:both;
+	float:left;
+}
+
+hr {
+	color: #787986;
+	background-color: #787986;
+	height: 2px;
+}
+
+ul#sideNavigation{
+	margin-top:75px;
+	list-style-type: none;
+	list-style-position: inside;
+}
+
+ul#sideNavigation li{
+	margin-top: 0.25em;
+}
+
+
+/* tiles */
+
+.sotivityToolbar button{
+	display:inline;
+}
+
+.sotivityToolbar{
+	display:inline;
+	width:100%;
+	float:right;
+	text-align:left;
+}
+
+.sotivityToolbar:after{
+	clear:both;
+}
+
+.sotivityImage{
+	margin:0px;
+	padding:0px;
+	width: 100px;
+	float:left;
+	
+	margin-top:20px;
+}
+
+.ui-panel-content, .ui-widget-content {
+	padding:0px;
+	margin:0px;
+}
+
+.sotivityInfo{
+	margin:0px;
+	padding:0px;
+	margin-left:100px;	
+}
+
+.sotivityInfo dl{
+	width:48%;
+	float:left;
+}
+
+.sotivityInfo div{
+	float:right;
+	width: 48%;
+}
+/*
+dl {
+	padding: 0.5em;
+	float: left;
+}
+
+
+dt {
+	float: left;
+	clear: left;
+	width: 90px;
+	text-align: left;
+	font-weight: bold;
+}
+
+dd {
+	margin: 0 0 0 0px;
+	padding: 0 0 0.5em 0;
+	
+}
+*/
+.sotivityPanel{
+	text-align:left;
+}
+
+.sotivityDescription{
+	clear:both;
+	display:block;
+}
+
+
+#registerForm{
+	float:right;
+	margin-top:30px;
+	margin-right:30px;
+}
+
+#registerForm dt{
+	clear: left;
+    color: #555555;
+    float: left;
+    margin-bottom: 0.8em;
+    text-align: right;
+    width: 10em;
+}
+
+#registerForm dd{
+	clear: right;
+    margin-bottom: 0.8em;
+    margin-left: 10.5em;
+    padding-left: 0.5em;
+}
+
+#registerForm dl{
+	background: rgba(0,0,0,0.75);
+	width:100%;
+	padding:0px;
+	margin-top:5px;
+	padding-top:0.8em;
+}
+
+#registerForm{
+	background: rgba(255,255,255,0.75);
+	
+}
+
+#register{
+	padding-top:0.8em;
+}
+
+
+#registerForm h2,p{
+	margin:0px;
+	margin-left:10px;
+	margin-top:5px;
+}
+
+/* tiny sotivity */
+
+
+.tinySotivity{
+	
+}
+
+.tinySotivity .tinyImage{
+	width:70px; 
+	float:left;
+}
+
+.tinySotivity img{
+	width:65px;
+	height:65px;
+}
+
+div.tinyDetails{
+	margin-left:70px;
+	width:100%;
+	float:right;
+	height:100px;
+}
+
+
+.tinyDetails:after{
+	clear:both;
+}
+
+
+.tinyTitle{
+	font-size: 0.9em;
+	display:block;
+}
+
+.tinyAddress, .tinyZip{
+	font-size: 0.8em;
+	display:block;
+}
+
+
+.tinyTitle{
+	font-weight:bold;
+}
+
+.tinyDescription{
+	clear:both;
+	font-size:0.8em;
+	display:block;
+	margin-top:5px;
+}
+
+
+div.tinySotivity:hover{
+	background: rgba(0,0,0,0.1);
+}
+
+.tinySotivitySeparator{
+	display:block;
+    border:none;
+	background:#7cc50a;
+    height:1px;
+    margin:0px;
+    margin-bottom:-6px;
+    margin-top:5px;
+    padding:0px;
+
+    
+}
+
+
+
+#contentsWrapper{
+	float:left;
+	width:100%;
+	margin-left:-250px;
+}
+
+#sotivityFeed:after{
+	clear:both;
+	
+}
+
+#contents{
+	margin-left:250px;
+}
+
+#additional{
+	width:250px;
+	float:right;
+}
+
+
+
+#additional #sideNavigation{
+	margin-top:40px;
+}
+
+
+
+#helper{
+	margin-left:40px;
+	margin-top:20px;
+}
+
+.helperCountPre, .helperCountSuffix{
+	
+
+}
+
+.helperCountPre{
+	font-size:1.5em;
+	color:#333333;
+}
+
+
+.helperCountSuffix{
+	font-size:1.1em;
+	color:#333333;	
+}
+
+.helperCountNumber{
+	font-size:2em;
+	color:#7cc50a;
+}
+
+#query{
+	margin-left:25px;
+}
+
+#toolbar\:navigation input{
+	margin-top:4px;
+	
+}
+
+::-webkit-input-placeholder {
+    color:    #999;
+}
+input:-moz-placeholder {
+    color:    #999  !important;
+}
+input::-moz-placeholder {
+    color:    #999 !important;
+}
+:-ms-input-placeholder {
+    color:    #999;
+}

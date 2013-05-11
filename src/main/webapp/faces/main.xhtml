@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="themes/bluesky/skin.css" />
+		<link type="text/css" rel="stylesheet"
+			href="resources/css/wienerhelden.css" />
+	</h:head>
+	<h:body>
+		<ui:composition template="template.xhtml">
+			<ui:define name="content">
+
+				<p:layout id="mainlayout"
+					style="min-width:400px;min-height:600px; background: url('#{splashScreenMBean.background}');"
+					fullpage="true">
+
+					<p:layoutUnit position="east" size="500" resizable="false">
+						<h:form id="registerForm">
+							<h2 class="#{splashScreenMBean.colorSchema}">Noch nicht dabei?</h2>
+							<p class="#{splashScreenMBean.colorSchema}">Jetzt mitmachen!</p>
+							<dl id="register">
+								<dt>
+									<h:outputLabel for="firstname" value="Vorname:"  />
+								</dt>
+								<dd>
+									<p:inputText id="firstname" value="#{registerMBean.firstname}"
+										required="true"
+										requiredMessage="Wir benötigen deinen Vornamen."
+										label="Vorname" maxlength="50">
+										<f:validateLength minimum="2" />
+									</p:inputText>
+									<p:message for="firstname" />
+								</dd>
+								<dt>
+									<h:outputLabel for="lastname" value="Nachname:"  />
+								</dt>
+								<dd>
+									<p:inputText id="lastname" value="#{registerMBean.lastname}"
+										required="true"
+										requiredMessage="Wir benötigen deinen Nachnamen."
+										label="Nachname" maxlength="50">
+										<f:validateLength minimum="2" />
+									</p:inputText>
+									<p:message for="lastname" />
+								</dd>
+								<dt>
+									<h:outputLabel for="nickname" value="Username:" />
+								</dt>
+								<dd>
+									<p:inputText id="nickname" value="#{registerMBean.nickname}"
+										required="true"
+										requiredMessage="Wir soll dein Username lauten?"
+										label="Nickname" maxlength="20">
+										<f:validateLength minimum="2" />
+									</p:inputText>
+									<p:message for="nickname" />
+								</dd>
+								<dt>
+									<h:outputLabel for="email" value="EMail-Adresse:" styleClass="" />
+								</dt>
+								<dd>
+									<p:inputText id="email" value="#{registerMBean.email}"
+										required="true"
+										requiredMessage="Wir benötigen eine Email Adresse."
+										validatorMessage="ungültige Email" maxlength="50">
+										<f:validateRegex
+											pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)" />
+									</p:inputText>
+									<p:message for="email" />
+								</dd>
+								<dt>
+									<h:outputLabel for="password" value="Passwort:" />
+								</dt>
+								<dd>
+									<p:password id="password" value="#{registerMBean.password}"
+										requiredMessage="Du brauchst ein Passwort."
+										match="passwordCheck" label="Password 1" required="true"
+										maxlength="50">
+										<f:validateLength minimum="4" />
+									</p:password>
+									<p:message for="password" />
+								</dd>
+								<dt>
+									<h:outputLabel for="passwordCheck"
+										value="Passwort wiederholen:" />
+								</dt>
+								<dd>
+									<p:password id="passwordCheck"
+										value="#{registerMBean.password}"
+										requiredMessage="Bitte wiederhol das Passwort."
+										label="Password 2" required="true" maxlength="50" />
+									<p:message for="passwordCheck" />
+								</dd>
+							</dl>
+							<p:commandButton id="submit" update="registerForm" value="Registrieren"
+								icon="ui-icon-check" action="#{registerMBean.submit}" />
+							<p class="agb-dark">
+								* Mit Klicken auf die Schaltfläche "Registrieren" akzeptieren Sie unsere <h:outputLink value="faces/termsAndConditions.xhtml">ABG's.</h:outputLink> 
+							</p>
+						</h:form>
+					</p:layoutUnit>
+
+					<p:layoutUnit position="center">
+						<h:form>
+
+							<h1 class="#{splashScreenMBean.colorSchema}">
+								Wir arbeiten daran uns einander näher zu bringen. <span
+									class="highlight-#{splashScreenMBean.colorSchema}">Schaffen
+									wir gemeinsam ein besseres Wien!</span>
+							</h1>
+
+							<p class="description-#{splashScreenMBean.colorSchema}">
+								Wir glauben, dass wir durch die Vernetzung unserer Umwelt dazu
+								beitragen können ein besseres Wien zu schaffen. Abseits von
+								Partei- und Vereinslinien. <b>Wiener Helden</b> - Wiens erste
+								Nachbarschaftshilfe Plattform.
+							</p>
+
+							<div class="span6 offset4">
+								<div class="contact">
+									<p class="address-#{splashScreenMBean.colorSchema}">
+										<span class="highlight">Tel:</span> +43 (0)1 94 20400-9
+									</p>
+									<p class="address-#{splashScreenMBean.colorSchema}">
+										<span class="highlight">Fax:</span> +43 (0)1 94 20400-4
+									</p>
+									<p class="address-#{splashScreenMBean.colorSchema}">
+										<span class="highlight">Email:</span><a
+											href="mailto:dev@wienerhelden.at"> dev@wienerhelden.at</a>
+									</p>
+									<p class="address-#{splashScreenMBean.colorSchema}">
+										<span class="highlight">Adresse:</span> Kandlgasse 9, 1070
+										Wien.
+									</p>
+								</div>
+							</div>
+			
+							<a
+								href="http://localhost:8080/WorkflowProject/services/webservice?wsdl">Link
+								zu WSDL</a>
+						</h:form>
+					</p:layoutUnit>
+
+				</p:layout>
+			</ui:define>
+		</ui:composition>
+	</h:body>
+</f:view>
+</html>

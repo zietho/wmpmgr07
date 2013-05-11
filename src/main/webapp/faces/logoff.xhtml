@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition prependId="false" template="template.xhtml">
+		<ui:define name="content">
+			<f:view>
+				<p:layout id="mainlayout"
+						style="min-width:400px;min-height:600px; background: url('#{splashScreenMBean.background}');"
+						fullpage="true" >
+						<p:layoutUnit position="center">
+				
+							<h1>Sie wurden abgemeldet.</h1>
+							<h2>
+								<em>Hoffentlich sehen wir uns bald wieder</em>
+							</h2>
+							<h:graphicImage library="img" name="avatar.png" />	
+						</p:layoutUnit>
+				</p:layout>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

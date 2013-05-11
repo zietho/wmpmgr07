@@ -1,0 +1,2 @@
+Infos zu Primefaces icons findet man unter
+http://jqueryui.com/themeroller/

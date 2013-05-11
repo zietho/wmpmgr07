@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="template.xhtml">
+		<ui:define name="content">
+			<f:view>
+				<p:layout style="min-width:400px;min-height:1500px;" id="layout">
+					<!--  Navigation Pane -->
+					<p:layoutUnit position="west" resizable="true" size="200"
+						minSize="40" maxSize="200">
+						<!--  Side Navigation -->
+						<ul id="sideNavigation">
+							<li><h:outputLink value="moderatorSotivities.xhtml">
+									<h:outputText value="Sotivities" />
+								</h:outputLink></li>
+							<li><h:outputLink value="moderatorUsers.xhtml">
+									<h:outputText value="Benutzer" />
+								</h:outputLink></li>
+						</ul>
+					</p:layoutUnit>
+					<!--  Contents -->
+					<p:layoutUnit position="center">
+
+						<h1>
+							<h:outputText value="Benutzer Bearbeiten" />
+						</h1>
+						<h:form id="userForm">
+							<p:dataTable id="multiUser" var="user"
+								value="#{moderatorMBean.userModel}" paginator="true" rows="15"
+								selection="#{moderatorMBean.selectedUsers}" editable="true"
+								widgetVar="userTable"
+								eptyMessage="Keine Benutzer mit den angegebenen Kriterien"
+								filteredValue="#{moderatorMBean.filteredUsers}">
+								
+								<f:facet name="header">
+										<p:inputText id="globalFilter" onkeyup="userTable.filter()" style="width:150px" />
+								</f:facet>
+
+								<p:ajax event="rowEdit" listener="#{moderatorMBean.onEdit}" />
+								<p:ajax event="rowEditCancel"
+									listener="#{moderatorMBean.onCancel}" />
+									
+								<p:column selectionMode="multiple" style="width:18px" />
+								<p:column headerText="Nicknamen" filterBy="#{user.nickname}" sortBy="#{user.nickname}">  
+           							#{user.nickname}
+           						</p:column>
+								<p:column headerText="Vornamen" filterBy="#{user.firstname}" sortBy="#{user.lastname}">  
+           							#{user.firstname}  
+								</p:column>
+								<p:column headerText="Nachnamen" filterBy="#{user.lastname}" sortBy="#{user.lastname}">  
+           							#{user.lastname}
+           						</p:column>
+								<p:column headerText="vertrauenswürdig" filterBy="#{user.trusted}" sortBy="#{user.trusted}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{user.trustedLabel}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:selectOneMenu value="#{user.trusted}" style="width:60px">
+												<f:selectItem itemLabel="Ja" itemValue="true" />
+												<f:selectItem itemLabel="Nein" itemValue="false" />
+											</p:selectOneMenu>
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column>
+									<p:rowEditor />
+								</p:column>
+
+								<f:facet name="footer">
+									<p:commandButton id="multiViewButton" value="Anzeigen"
+										icon="ui-icon-search" update=":userForm:multiDialog"
+										oncomplete="multiUserDialog.show()" />
+									<p:commandButton id="trustUser" value="User vertrauen"
+										icon="ui-icon-star"
+										action="#{moderatorMBean.trustUsers(true)}"
+										update=":userForm">
+									</p:commandButton>
+									<p:commandButton id="untrustUser" value="User nicht vertrauen"
+										icon="ui-icon-person"
+										action="#{moderatorMBean.trustUsers(false)}"
+										update=":userForm">
+									</p:commandButton>
+									<p:commandButton id="deleteUser" value="Löschen"
+										icon="ui-icon-person" action="#{moderatorMBean.deleteUser}"
+										update=":userForm">
+									</p:commandButton>
+								</f:facet>
+							</p:dataTable>
+							<p:dialog id="multiDialog" header="User Detail"
+								widgetVar="multiUserDialog" height="300" width="500" showEffect="fade"
+								hideEffect="explode">
+								<h:outputText value="User Id"/>
+								<h:outputText id="userId" value="#{moderatorMBean.selectedUser.nickname}" />
+
+							</p:dialog>
+						</h:form>
+					</p:layoutUnit>
+				</p:layout>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

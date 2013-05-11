@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wh="http://java.sun.com/jsf/composite/wh"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>					
+	<h:body>
+		<ui:composition template="template.xhtml">
+			<ui:define name="content">
+				
+				<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript" />
+				<script type="text/javascript" src="../resources/javascript/mapCodeSovtivityPointSearch.js"/>
+				
+				<p></p>
+
+				<div style="margin-left: auto; margin-right: auto">
+					<h:form styleClass="search-form" prependId="false" id="searchCrit">
+					
+						<p:dialog visible="false">
+							<p:commandButton id="map_javascript_hddnButton" name="map_javascript_hddnButton"
+									value="InvisibleCall"
+									action="#{searchMBean.addMarker}" update=":searchCrit"/>
+							<h:inputHidden id="map_javascript_lat"
+										value="#{searchMBean.lat}" />
+							<h:inputHidden id="map_javascript_lng"
+										value="#{searchMBean.lng}" />
+						</p:dialog>
+					
+					
+
+						<!-- TODO -->
+							<p:outputPanel layout="block" id="messagesMap" style="background: transparent; padding:0 2%">
+										<p:gmap id="gmap" center="48.2088,16.3726" zoom="13"
+											type="ROADMAP" style="width: 64%; display: inline-block; height:400px"
+											model="#{searchMBean.emptyModel}"
+											onPointClick="simplePointClick(event);" widgetVar="map">
+											<p:ajax event="markerDrag"
+														listener="#{searchMBean.onMarkerDragSearchPoint}"
+														update="messagesMap" />
+										</p:gmap>
+								<div style="width: 34%; display: inline-block;vertical-align:top" >
+									<p>
+											Setzen Sie Ihre Orte in deren Nähe Sie Sotivities suchen.
+											Geben Sie entweder die Adresse ein z.B. 1040 Wien, Karlsplatz 4 oder klicken Sie auf die Karte.
+											</p>
+											<p:inputText id="addressText" value="#{searchMBean.addressText}" style="margin-bottom:5px;width:98%"/>
+											<p:commandButton id="addAddressMap" value="Adresse setzen" actionListener="#{searchMBean.addAddress}" update="messagesMap"/>
+											<h3>Meine Adressen</h3>										
+											<p:selectOneMenu id="userAddresses" value="#{searchMBean.selectedAddress}" style="width:100%">
+												<p:ajax listener="#{searchMBean.onOwnAddressChange}" update="messagesMap"/>
+												<f:selectItems value="#{searchMBean.addressList}" />
+											</p:selectOneMenu>
+											<h:outputLabel value="Umkreis in Meter" for="slider"/>
+										        <p:inputText id="slider" value="#{searchMBean.sliderRange}" size="3" disabled="true" style="display: inline-block;margin: 5px"/>  
+										        <p:slider for="slider" step="500" minValue="100" maxValue="7000" style="margin-bottom:5px">
+										        	<p:ajax event="slideEnd" listener="#{searchMBean.onSlideEnd}" update="gmap" />
+										        </p:slider>
+										    <p:commandButton value="Punkt löschen" update="messagesMap" actionListener="#{searchMBean.deleteSearchPoint}" />
+								    		
+								</div>
+							</p:outputPanel>
+						<!-- TODO -->
+
+						<p:accordionPanel id="accPanMap" multiple="true" activeIndex="-2">
+							
+							<!-- andere Kategorien der Suche -->
+							<p:tab title="Erweiterte Suche" id="extendedSearch">
+								<div class="formBlock">
+									<fieldset>
+										<h:panelGrid id="catecoryMap" columns="2" cellpadding="3" cellspacing="3" border="0">
+												<h:outputText for="category" value="Kategorie " />
+												<p:selectOneMenu id="category" style="width:25em"
+													value="#{searchMBean.selectedCategory}">
+													<f:selectItems value="#{searchMBean.categoryList}" />
+												</p:selectOneMenu>
+												
+												<h:outputText for="skill" value="Skill " />
+												<p:selectOneMenu id="skill" style="width:25em"
+													value="#{searchMBean.selectedSkill}">
+													<f:selectItems value="#{searchMBean.skillList}" />
+												</p:selectOneMenu>
+
+												<h:outputText value="Bis Wann? " for="popupButtonCal"/>
+												
+												<p:calendar value="#{searchMBean.dateEnd}" inputStyleClass="calClass" 
+													id="popupButtonCal" showOn="button" pattern="dd.MM.yyyy"/>
+												
+												<p:outputPanel>
+												<p:selectBooleanCheckbox value="#{searchMBean.extSearchActivated}"/>
+												<h:outputText for="durationSlider" value="max. Dauer in Minuten " />  
+												</p:outputPanel>
+												<h:panelGrid columns="4">
+												    <p:inputText id="duration" value="#{searchMBean.maxDuration}" size="2" style="display:none" update="catecoryMap" />  
+												    <p:slider id="durationSlider" for="duration" step="15" minValue="15" maxValue="600" update="sliderMinutes" style="width:25em">
+												    	 <p:ajax event="slideEnd" listener="#{searchMBean.formatDuration}" update="sliderMinutes"/>
+												    </p:slider>  							    	
+												    <h:outputText id="sliderMinutes" value="#{searchMBean.formattedDuration}" /> 
+												</h:panelGrid>
+										</h:panelGrid>
+									</fieldset>
+								</div>
+							</p:tab>
+						</p:accordionPanel>
+						
+						<p:inputText styleClass="input-medium search-query" id="query"
+							value="#{searchMBean.query}" style="display:inline-block; width:500px" />
+
+						<p:commandButton value="Suchen" update=":result messagesMap searchCount"
+							actionListener="#{searchMBean.search}" />
+							
+						<p:commandButton value="Zurücksetzen" update=":result messagesMap searchCount searchCrit"
+							actionListener="#{searchMBean.searchReset}" />
+							
+						<h:outputLabel id="searchCount" value="#{searchMBean.result.size()} Suchergebnisse" />
+					</h:form>
+				</div>
+
+
+				<p></p><p></p>
+
+				<!-- <wh:sotivityContainer emptyMessage="Keine Sotivities gefunden..." id="result" sotivityList="#{searchMBean.result}" /> -->
+					
+				<h:form id="result" prependId="false">
+
+					<p:dataGrid var="soti" value="#{searchMBean.result}" columns="1"
+						rows="7" paginator="true" emptyMessage="Keine Sotivities gefunden"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+						<p:panel styleClass="sotivityPanel">
+
+							<f:facet name="header">
+								<span class="ui-icon ui-icon-comment"
+									style="display: inline-block" />
+								<h:outputText
+									value="#{soti.title}" />
+							</f:facet>
+
+
+							<!--  Toolbar -->
+							<div class="sotivityToolbar">
+
+								<p:commandButton id="angebotSenden" icon="ui-icon-mail-closed"
+									rendered="#{searchMBean.isOfferable(soti)}"
+									value="Angebot senden" update=":sendeAngebot"
+									oncomplete="sendeAngebotDialog.show()">
+									<f:setPropertyActionListener value="#{soti}"
+										target="#{searchMBean.selectedSotivity}" />
+								</p:commandButton>
+
+								<p:button icon="ui-icon-mail-closed" value="Angebot gesendet"
+									styleClass="offerAccepted" disabled="true"
+									rendered="#{searchMBean.offerSent(soti)}" />
+							</div>
+							<!--  Image -->
+							<div class="sotivityImage">
+								<p:graphicImage
+									value="../resources/img/category/#{userSotivitiesMBean.getCategoryId(soti)}.jpg"
+									width="100px" />
+							</div>
+							<!--  Info -->
+							<div class="sotivityInfo">
+								<!-- Keydata -->
+								<dl>
+									<dt>Referenz:</dt>
+									<dd>
+										<h:outputText value="#{soti.id}" />
+									</dd>
+									<dt>Kategorie:</dt>
+									<dd>
+										<h:outputText
+											value="#{userSotivitiesMBean.getKategorieName(soti)}" />
+									</dd>
+									<dt>Ablauf:</dt>
+									<dd>
+										<h:outputText value="#{soti.dateEnd}">
+											<f:convertDateTime pattern="dd.MM.yyyy" />
+										</h:outputText>
+									</dd>
+									<dt>Dauer:</dt>
+									<dd>
+										<h:outputText value=" #{userSotivitiesMBean.getDauer(soti)}" />
+									</dd>
+									<dt>Sichtbar:</dt>
+									<dd>
+										<h:outputText value="Für alle Helfer"
+											rendered="#{soti.publicVisible == true}" />
+										<h:outputText value="für vertrauenswürdige Helfer"
+											rendered="#{soti.publicVisible == false}" />
+									</dd>
+									<dt></dt>
+								</dl>
+								<!--  Adress -->
+								<div>
+									<br></br>
+									<p:outputPanel
+										rendered="#{soti.user.id != userSotivitiesMBean.getUser().getId()}">
+										<h:outputText style="font-weight:bold" value="Hilfesuchender:"></h:outputText>
+										<br />
+										<span
+											class="ui-icon #{soti.user.trusted == true ? 'ui-icon-circle-check' : 'ui-icon-alert'}"
+											title="#{soti.user.trusted == true ? 'vertrauenswürdig' : 'nicht verifiziert'}"
+											style="display: inline-block" />
+										<h:outputText
+											value=" #{soti.user.firstname} #{soti.user.lastname} (#{soti.user.nickname})" />
+										<br></br>
+										<br></br>
+									</p:outputPanel>
+									<h:outputText value="#{soti.address.street}" />
+									<br></br>
+									<h:outputText value="#{soti.address.zip} #{soti.address.place}" />
+								</div>
+								<hr
+									style="clear: both; height: 0px; visibility: hidden; margin-top: -10px; border: 0px;" />
+							</div>
+							<!-- Description -->
+							<h:outputText style="font-weight:bold"
+								value=" #{soti.user.firstname} #{soti.user.lastname}, " />
+							<h:outputText value="#{soti.dateCreated}">
+								<f:convertDateTime pattern="dd.MM.yyyy" />
+							</h:outputText>
+							<h:outputText value="#{soti.description}"
+								styleClass="sotivityDescription" />
+						</p:panel>
+					</p:dataGrid>
+
+				</h:form>
+
+
+				<p:dialog id="sendeAngebot"
+					header="#{searchMBean.selectedSotivity.title} - Angebot senden"
+					widgetVar="sendeAngebotDialog" modal="true" resizable="false">
+					<p:outputPanel style="text-align:left;" layout="block">
+						<h:form id="send" prependId="false">
+							<h:panelGrid columns="1" style="width:100%;text-align:left">
+
+								<p:outputLabel for="comment" value="Kommentar" />
+								<p:inputTextarea rows="6" cols="33" id="comment"
+									value="#{searchMBean.offerComment}" maxlength="300"
+									autoResize="false" />
+								<p:commandButton id="close" icon="ui-icon-mail-closed"
+									action="#{searchMBean.sendOffer}" update=":result"
+									oncomplete="sendeAngebotDialog.hide();" value="Senden">
+								</p:commandButton>
+							</h:panelGrid>
+
+						</h:form>
+					</p:outputPanel>
+				</p:dialog>
+			</ui:define>
+		</ui:composition>
+	</h:body>
+</f:view>
+</html>

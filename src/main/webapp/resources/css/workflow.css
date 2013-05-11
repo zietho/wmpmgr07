@@ -1,0 +1,9 @@
+.offerRejected { background-color: #ffaaaa !important;
+                background-image: none !important;
+                color: #000000 !important;
+                }
+
+.offerAccepted { background-color: #aaffaa !important;
+                background-image: none !important;
+                color: #000000 !important;
+                }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:wh="http://java.sun.com/jsf/composite/wh"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+
+	<composite:attribute name="sotivity" />
+<!-- 	<composite:attribute name="detailsAction" -->
+<!-- 		method-signature="java.lang.String action()" /> -->
+
+</composite:interface>
+
+<composite:implementation>
+	<div>
+		<h3>
+			<h:outputText value="#{cc.attrs.sotivity.title}" />
+		</h3>
+		<h4>
+			von
+			<h:outputText value="#{cc.attrs.sotivity.user.nickname}" />
+			<small> bis: <h:outputText
+					value="#{cc.attrs.sotivity.dateEnd}">
+					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+				</h:outputText>
+			</small>
+		</h4>
+		<p>
+			<h:outputText value="#{cc.attrs.sotivity.description}" />
+		</p>
+<!-- 		<p:commandButton value="Details..."> -->
+<!-- 			<f:setPropertyActionListener value="#{r}" -->
+<!-- 				target="#{searchMBean.clickedSotivity}" /> -->
+<!-- 		</p:commandButton> -->
+
+	</div>
+</composite:implementation>
+
+</html>

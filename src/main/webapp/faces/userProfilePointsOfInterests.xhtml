@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="template.xhtml">
+		<ui:define name="content">
+			<script src="http://maps.google.com/maps/api/js?sensor=false"
+				type="text/javascript" />
+			<script type="text/javascript"
+				src="../resources/javascript/mapCodeSovtivityPoint.js" />
+			<style type="text/css">
+div#all {
+	width: 100%;
+}
+</style>
+			<f:view>
+				<p:layout id="top" style="min-width:400px;min-height:600px;" fullpage="true">
+					<p:layoutUnit position="west" resizable="true" size="230"
+						minSize="40" maxSize="230">
+						<!--  Side Navigation -->
+						<ul id="sideNavigation">
+							<li><h:outputLink value="userProfile.xhtml">
+									<h:outputText value="Daten" />
+								</h:outputLink></li>
+							<li><h:outputLink value="userProfilePointsOfInterests.xhtml">
+									<h:outputText value="Orte" />
+								</h:outputLink></li>
+							<!-- <li><h:outputLink value="userProfileConnections.xhtml">
+									<h:outputText value="Verbindungen" />
+								</h:outputLink></li> -->
+						</ul>
+					</p:layoutUnit>
+					<!--  Contents -->
+					<p:layoutUnit position="center">
+						<center>
+							<h:outputLabel id="greeting" value="#{userMBean.getGreeting()}" />
+						</center>
+						<div>
+							<h:form id="mapForm" prependId="false">
+								<h:panelGrid id="mapPanelGrid">
+									<h:outputLabel
+										value="Setzen sie ihre Orte in deren Nähe sie Sotivities suchen."></h:outputLabel>
+									<h:outputLabel
+										value="Geben sie entweder die Adresse ein oder klicke sie auf die Karte. Verschieben sie die Punkte beliebig."></h:outputLabel>
+									<h:outputLabel value="z.B. 1040 Wien, Karlsplatz 4"></h:outputLabel>
+									<h:panelGrid id="addAddressGrid" columns="2">
+										<p:inputText id="addressText"
+											value="#{changeUserMBean.addressText}" style="width:25em">
+										</p:inputText>
+										<p:commandButton id="addAddressMap" value="Adresse hinzufügen"
+											actionListener="#{changeUserMBean.addAddress}"
+											oncomplete="document.getElementById('map_javascript_input').style.display='block';" />
+									</h:panelGrid>
+									<h:panelGrid id="panel" columns="2" cellpadding="0"
+										cellspacing="2" border="1">
+										<h:panelGrid styleClass="datalist-noborder">
+											<p:gmap id="gmap" center="48.2088,16.3726" zoom="13"
+												type="ROADMAP" style="width:600px;height:400px"
+												model="#{changeUserMBean.emptyModel}"
+												onPointClick="handlePointClick(event);" widgetVar="map">
+												<p:ajax event="markerDrag"
+													listener="#{changeUserMBean.onMarkerDrag}"
+													update="points" />
+											</p:gmap>
+										</h:panelGrid>
+										<h:panelGrid styleClass="datalist-noborder">
+											<p:dataList id="points" value="#{changeUserMBean.allMarkers}"
+												var="point" itemType="none" styleClass="ui-widget-content">
+												<p:commandButton icon="ui-icon-circle-close"
+													update=":mapForm:panel" title="Punkt löschen">
+													<f:setPropertyActionListener value="#{point}"
+														target="#{changeUserMBean.selectedMarker}" />
+												</p:commandButton>
+												#{point.title} <!--  #{point.latlng.lat} #{point.latlng.lng} -->
+												<p></p>
+											</p:dataList>
+										</h:panelGrid>
+									</h:panelGrid>
+									<h:panelGrid columns="2" id="map_javascript_input"
+										style="display:none;">
+										<h:outputLabel for="map_javascript_title" value="Title:" />
+										<p:inputText id="map_javascript_title"
+											value="#{changeUserMBean.pointTitle}">
+											<f:validateLength maximum="10" minimum="2" />
+										</p:inputText>
+										<f:facet name="footer">
+											<p:commandButton id="addButton" value="Hinzuf&uuml;gen"
+												oncomplete="currentMarker=null; document.getElementById('map_javascript_input').style.display='none'; document.getElementById('map_javascript_hddnButton').click();" />
+											<p:dialog visible="false">
+												<p:commandButton id="map_javascript_hddnButton"
+													value="InvisibleCall" action="#{changeUserMBean.addMarker}"
+													update="mapPanelGrid" />
+											</p:dialog>
+											<p:commandButton value="Abbrechen" onclick="return cancel()"
+												actionListener="#{changeUserMBean.reset}" />
+										</f:facet>
+									</h:panelGrid>
+									<h:inputHidden id="map_javascript_lat"
+										value="#{changeUserMBean.lat}" />
+									<h:inputHidden id="map_javascript_lng"
+										value="#{changeUserMBean.lng}" />
+									<p:commandButton id="submitLocations" value="Orte übernehmen"
+										icon="ui-icon-check" update=":messages"
+										action="#{changeUserMBean.submitLocations}" />
+								</h:panelGrid>
+							</h:form>
+						</div>
+					</p:layoutUnit>
+				</p:layout>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+
+
+
+

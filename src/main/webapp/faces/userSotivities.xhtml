@@ -1,0 +1,473 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="template.xhtml">
+		<ui:define name="content">
+			<script src="http://maps.google.com/maps/api/js?sensor=false"
+				type="text/javascript" />
+			<f:view>
+				<p:layout style="min-width:400px;min-height:1500px;" id="layout">
+					<!--  Navigation Pane -->
+					<p:layoutUnit position="west" resizable="false" size="200"
+						minSize="40" maxSize="200">
+						<!--  Side Navigation -->
+						<ul id="sideNavigation">
+							<li style="#{userSotivitiesMBean.selectedSotivityType == 0 ? 'background-color:#aaffaa !important;' : ''}"><p:commandLink update="layout :tableForm">
+									<h:outputText value="Alle" />
+									<f:setPropertyActionListener value="0"
+										target="#{userSotivitiesMBean.selectedSotivityType}" />
+								</p:commandLink></li>
+							<li style="#{userSotivitiesMBean.selectedSotivityType == 1 ? 'background-color:#aaffaa !important;' : ''}"><p:commandLink update="layout :tableForm">
+									<h:outputText value="Suche Hilfe" />
+									<f:setPropertyActionListener value="1"
+										target="#{userSotivitiesMBean.selectedSotivityType}" />
+								</p:commandLink></li>
+							<li style="#{userSotivitiesMBean.selectedSotivityType == 2 ? 'background-color:#aaffaa !important;' : ''}"><p:commandLink update="layout :tableForm">
+									<h:outputText value="Biete Hilfe" />
+									<f:setPropertyActionListener value="2"
+										target="#{userSotivitiesMBean.selectedSotivityType}" />
+							</p:commandLink></li>
+						</ul>
+					</p:layoutUnit>
+
+					<!--  Contents -->
+					<p:layoutUnit position="center">
+						<h:form prependId="false" id="tableForm">
+							<h1>
+								<h:outputText value="Eigene" />
+								<em> Sotivities </em>
+								<h:outputText value=" - Alle"
+									rendered="#{userSotivitiesMBean.selectedSotivityType == 0}" />
+								<h:outputText value=" - Suche Hilfe"
+									rendered="#{userSotivitiesMBean.selectedSotivityType == 1}" />
+								<h:outputText value=" - Biete Hilfe"
+									rendered="#{userSotivitiesMBean.selectedSotivityType == 2}" />
+							</h1>
+							<hr />
+
+							<h:outputLabel rendered="#{userSotivitiesMBean.selectedSotivityType == 0}"
+								value="Hier werden alle Sotivities angezeigt, die von dir erstellt wurden, oder denen du Angebote gesendet hast." />
+								
+							<h:outputLabel rendered="#{userSotivitiesMBean.selectedSotivityType == 1}"
+								value="Hier werden alle Sotivities angezeigt, die von dir erstellt wurden. Du kannst Angebote von Helfern annehmen oder abweisen und erledigte Sotivities abschließen." />
+								
+							<h:outputLabel rendered="#{userSotivitiesMBean.selectedSotivityType == 2}"
+								value="Hier werden alle Sotivities angezeigt, denen du Angebote geschickt hast. Du kannst dein Angebot nocheinmal bearbeiten oder zurückziehen. Wird dein Angebot angenommen, siehst du hier die Kontaktinformationen." />
+							<p></p>
+
+							<p><p:selectOneMenu value="#{userSotivitiesMBean.selectedSotiState}" style="width:200px !important">
+								<f:selectItem itemLabel="Alle" itemValue="0" />
+								<f:selectItem itemLabel="Offene" itemValue="1" />
+								<f:selectItem itemLabel="Abgeschlossene" itemValue="2" />
+								<p:ajax update="tableForm" />
+							</p:selectOneMenu>
+							</p>
+
+							<h:outputLabel
+								value="Anzahl: #{userSotivitiesMBean.getUserSotivities().size()}" />
+
+							<p:dataGrid var="soti" rowStyleClass="sotiOwned"
+								value="#{userSotivitiesMBean.getUserSotivities()}" columns="1"
+								rows="6" paginator="true" emptyMessage="Keine Sotivities gefunden"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+								<p:panel styleClass="sotivityPanel">
+
+									<f:facet name="header">
+										<span class="ui-icon ui-icon-comment"
+											style="display: inline-block" />
+										<h:outputText
+											value="#{soti.user.id != userSotivitiesMBean.getUser().getId() ? (soti.done ? 'GEHOLFEN' : 'ANGEBOT GESENDET') : (soti.done ? 'ABGESCHLOSSEN' : 'SUCHE HILFE')} - #{soti.title}" />
+									</f:facet>
+
+
+									<!--  Toolbar -->
+									<div class="sotivityToolbar">
+									
+										<!-- HILFESUCHENDER -->
+										<p:outputPanel
+											rendered="#{soti.user.id == userSotivitiesMBean.getUser().getId()}">
+											<p:commandButton id="edit"
+												action="#{userSotivitiesMBean.edit}"
+												rendered="#{soti.done == false}" value="Editieren"
+												icon="ui-icon-pencil">
+												<f:setPropertyActionListener value="#{soti}"
+													target="#{userSotivitiesMBean.selectedSotivity}" />
+											</p:commandButton>
+											
+											<p:commandButton id="fbdialog" icon="ui-icon-fb"
+												rendered="#{empty soti.facebookId and not soti.done}"
+												value="Facebook Event erstellen" update=":createFacebookEvent"
+												oncomplete="createFacebookEventDialog.show()">
+												<f:setPropertyActionListener value="#{soti}"
+													target="#{userSotivitiesMBean.selectedSotivity}" />
+											</p:commandButton>
+													
+											<p:commandButton id="angebote" icon="ui-icon-mail-closed"
+												value="#{soti.done ? 'Verlauf' : 'Angebote verwalten'} (#{not empty soti.workflows ? soti.workflows.size() : '0'})"
+												update=":sotivityAngebote"
+												oncomplete="angeboteDialog.show()">
+												<f:setPropertyActionListener value="#{soti}"
+													target="#{userSotivitiesMBean.selectedSotivity}" />
+											</p:commandButton>
+
+											<p:commandButton id="erledigt" icon="ui-icon-check"
+												rendered="#{userSotivitiesMBean.isAbschliessbar(soti)}"
+												value="Abschließen" update=":sotivityAbgeschlossen"
+												oncomplete="dankeDialog.show()">
+												<f:setPropertyActionListener value="#{soti}"
+													target="#{userSotivitiesMBean.selectedSotivity}" />
+											</p:commandButton>
+										</p:outputPanel>
+
+
+										<!-- HELFER -->
+										<p:outputPanel
+											rendered="#{soti.user.id != userSotivitiesMBean.getUser().getId()}">
+
+											<p:commandButton id="angebotBearbeiten"
+												icon="ui-icon-mail-closed"
+												rendered="#{userSotivitiesMBean.showChangeOffer(soti,userSotivitiesMBean.getUser())}"
+												value="Angebot bearbeiten" update=":sendeAngebot"
+												oncomplete="sendeAngebotDialog.show()">
+												<f:setPropertyActionListener value="#{soti}"
+													target="#{userSotivitiesMBean.selectedSotivity}" />
+												<f:setPropertyActionListener value="#{userSotivitiesMBean.getSotivityAngebot(soti,userSotivitiesMBean.getUser()).comment}"
+													target="#{userSotivitiesMBean.offerComment}" />
+											</p:commandButton>
+											
+											<p:commandButton
+												icon="ui-icon-person"
+												rendered="#{userSotivitiesMBean.showAcceptedMessage(soti,userSotivitiesMBean.getUser())}"
+												value="Kontaktinformationen" update=":showContactinfo"
+												oncomplete="showContactinfoDialog.show()">
+												<f:setPropertyActionListener value="#{soti}"
+													target="#{userSotivitiesMBean.selectedSotivity}" />
+											</p:commandButton>
+											
+										</p:outputPanel>
+
+
+									</div>
+									<!--  Image -->
+									<div class="sotivityImage">
+										<p:graphicImage
+											value="../resources/img/category/#{userSotivitiesMBean.getCategoryId(soti)}.jpg"
+											width="100px" />
+									</div>
+									<!--  Info -->
+									<div class="sotivityInfo">
+
+
+										<!-- Keydata -->
+										<dl>
+											<dt>Referenz:</dt>										
+											<dd><h:outputText value="#{soti.id}"/></dd>
+											<dt>Kategorie:</dt>
+											<dd>
+												<h:outputText value="#{userSotivitiesMBean.getKategorieName(soti)}"/>
+											</dd>
+											<dt>Ablauf:</dt>
+											<dd>
+												<h:outputText value="#{soti.dateEnd}">
+													<f:convertDateTime pattern="dd.MM.yyyy" />
+												</h:outputText>
+											</dd>
+											<dt>Dauer:</dt>
+											<dd>
+												<h:outputText value=" #{userSotivitiesMBean.getDauer(soti)}" />
+											</dd>
+											<dt>Sichtbar:</dt>
+											<dd>
+												<h:outputText value="Für alle Helfer"
+													rendered="#{soti.publicVisible == true}" />
+												<h:outputText value="für vertrauenswürdige Helfer"
+													rendered="#{soti.publicVisible == false}" />
+											</dd>
+											<dt></dt>
+										</dl>
+										
+										<!--  Adress -->
+										<div>
+											<br></br>
+											<p:outputPanel
+												rendered="#{soti.user.id != userSotivitiesMBean.getUser().getId()}">
+												<h:outputText style="font-weight:bold"
+													value="Hilfesuchender:"></h:outputText>
+												<br />
+												<span
+													class="ui-icon #{soti.user.trusted == true ? 'ui-icon-circle-check' : 'ui-icon-alert'}"
+													title="#{soti.user.trusted == true ? 'vertrauenswürdig' : 'nicht verifiziert'}"
+													style="display: inline-block" />
+												<h:outputText
+													value=" #{soti.user.firstname} #{soti.user.lastname} (#{soti.user.nickname})" />
+												<br></br>
+												<br></br>
+											</p:outputPanel>
+											<h:outputText value="#{soti.address.street}" />
+											<br></br>
+											<h:outputText
+												value="#{soti.address.zip} #{soti.address.place}" />
+										</div>
+										<hr
+											style="clear: both; height: 0px; visibility: hidden; margin-top: -10px; border: 0px;" />
+									</div>
+									<!-- Description -->
+									<h:outputText style="font-weight:bold"
+										value=" #{soti.user.firstname} #{soti.user.lastname}, " />
+									<h:outputText value="#{soti.dateCreated}">
+										<f:convertDateTime pattern="dd.MM.yyyy" />
+									</h:outputText>
+									<h:outputText value="#{soti.description}"
+										styleClass="sotivityDescription" />
+										
+									<h:outputLink value="https://facebook.com/events/#{soti.facebookId}"
+												rendered="#{not empty soti.facebookId}">
+												Zum Facebook Event
+											</h:outputLink>
+									<!-- GESENDETE ANGEBOTS NACHRICHT -->
+									<p:outputPanel
+										rendered="#{soti.user.id != userSotivitiesMBean.getUser().getId()}">
+										<p>
+											<h:outputText style="font-weight:bold"
+												value="Angebot gesendet, " />
+											<h:outputText
+												value="#{userSotivitiesMBean.getSotivityAngebot(soti,userSotivitiesMBean.getUser()).dateCreated}">
+												<f:convertDateTime pattern="dd.MM.yyyy" />
+											</h:outputText>
+											<br />
+											<h:outputText
+												value="#{userSotivitiesMBean.getSotivityAngebot(soti,userSotivitiesMBean.getUser()).comment}" />
+										</p>
+									</p:outputPanel>
+									
+									<!-- INFO ANGEBOT ANGENOMMEN -->
+									<p:outputPanel
+										rendered="#{userSotivitiesMBean.showAcceptedMessage(soti,userSotivitiesMBean.getUser())}">
+										<p>
+											<h:outputText style="font-weight:bold"
+												value="Angebot angenommen" />
+											<br/>
+											<h:outputText
+												value="Dein Angebot wurde von #{soti.user.firstname} angenommen. Klicke auf 'Kontaktinformationen' und macht euch einen Termin aus."/>
+										</p>
+									</p:outputPanel>
+									
+									<p>
+										<!-- ZURÜCKGEWIESEN NACHRICHT -->
+										<p:outputPanel
+											rendered="#{userSotivitiesMBean.showRejectedMessage(soti,userSotivitiesMBean.getUser())}">
+											<h:outputText style="font-weight:bold"
+												value="Angebot zurückgewiesen" />
+											<br />
+											<h:outputText
+												value="Dein Angebot zu dieser Sotivity wurde von #{soti.user.firstname} leider zurückgewiesen. Danke trotzdem für deine Bemühungen und dein Engagement. Wir hoffen, dass du bald anderen Hilfesuchenden weiterhelfen kannst." />
+										</p:outputPanel>
+
+										<!-- DANKE NACHRICHT -->
+										<p:outputPanel
+											rendered="#{userSotivitiesMBean.showThanksMessage(soti,userSotivitiesMBean.getUser())}">
+											<h:outputText style="font-weight:bold"
+												value="Sotivity abgeschlossen, " />
+											<h:outputText
+												value="#{userSotivitiesMBean.getThanks(soti,userSotivitiesMBean.getUser()).dateCreated}">
+												<f:convertDateTime pattern="dd.MM.yyyy" />
+											</h:outputText>
+											<br />
+											<h:outputText value="#{userSotivitiesMBean.getThanks(soti,userSotivitiesMBean.getUser()).comment}" />
+										</p:outputPanel>
+									</p>
+								</p:panel>
+							</p:dataGrid>
+
+						</h:form>
+
+					</p:layoutUnit>
+				</p:layout>
+
+				<p:dialog id="sotivityAngebote"
+					header="#{userSotivitiesMBean.selectedSotivity.title} - Angebote verwalten"
+					widgetVar="angeboteDialog" modal="true" resizable="false">
+					<p:outputPanel style="text-align:left;" layout="block">
+						<p:dataTable id="angeboteTable" var="angebot"
+							emptyMessage="Keine Angebote erhalten."
+							value="#{userSotivitiesMBean.selectedSotivityAngebote}"
+							rowStyleClass="#{angebot.state == 'ACCEPTED' ? 'offerAccepted' : (angebot.state == 'DONE' ? 'offerAccepted' : (angebot.state == 'REJECTED' ? 'offerRejected' : null))}">
+							<p:column headerText="Helfer">
+								<span
+									class="ui-icon #{angebot.user.trusted == true ? 'ui-icon-circle-check' : 'ui-icon-alert'}"
+									title="#{angebot.user.trusted == true ? 'vertrauenswürdig' : 'nicht verifiziert'}"
+									style="display: inline-block" />
+								<h:outputText
+									value=" #{angebot.user.firstname} #{angebot.user.lastname} (#{angebot.user.nickname})" />
+							</p:column>
+
+							<!-- <p:column headerText="Vertrauenswürdig">
+								<p:outputLabel value="vertrauenswürdig"
+									rendered="#{angebot.user.trusted == true}" />
+								<p:outputLabel value="nicht verifiziert"
+									rendered="#{angebot.user.trusted == false}" />
+							</p:column>-->
+
+							<p:column headerText="Kommentar">
+								<h:outputText value="#{angebot.comment}" />
+							</p:column>
+
+							<p:column headerText="Gesendetes Dankeschön"
+								rendered="#{userSotivitiesMBean.selectedSotivity.done}">
+								<h:outputText value="#{userSotivitiesMBean.getThanks(angebot)}" />
+							</p:column>
+
+							<p:column headerText="Aktionen"
+								rendered="#{userSotivitiesMBean.selectedSotivity.done == false}">
+								<h:form>
+									<p:commandButton id="annehmen" icon="ui-icon-circle-check"
+										disabled="#{angebot.state.equals('ACCEPTED')}"
+										value="Annehmen" update=":angeboteTable :tableForm"
+										action="#{userSotivitiesMBean.acceptOffer(angebot)}">
+									</p:commandButton>
+
+									<p:commandButton id="zurueckweisen" icon="ui-icon-circle-close"
+										disabled="#{angebot.state.equals('REJECTED')}"
+										value="Zurückweisen" update=":angeboteTable :tableForm"
+										action="#{userSotivitiesMBean.rejectOffer(angebot)}">
+									</p:commandButton>
+								</h:form>
+							</p:column>
+						</p:dataTable>
+
+						<p style="text-align: center">
+							<p:commandButton id="close" icon="ui-icon-closethick"
+								oncomplete="angeboteDialog.hide()" value="Fenster schließen">
+							</p:commandButton>
+						</p>
+					</p:outputPanel>
+				</p:dialog>
+
+
+
+				<p:dialog id="sotivityAbgeschlossen"
+					header="#{userSotivitiesMBean.selectedSotivity.title} - Abschließen"
+					widgetVar="dankeDialog" modal="true" resizable="false">
+					<p:outputPanel style="text-align:center;" layout="block">
+						<h:form>
+							<h:panelGrid columns="1" style="width:100%;text-align:left">
+
+								<p:outputLabel for="comment" value="Kommentar" />
+								<p:inputTextarea rows="6" cols="33" id="comment" maxlength="300"
+									autoResize="false" value="#{userSotivitiesMBean.comment}" />
+								<p:commandButton id="close" icon="ui-icon-mail-closed"
+									action="#{userSotivitiesMBean.abschliessen}"
+									update=":tableForm" oncomplete="dankeDialog.hide()"
+									value="Danke sagen">
+								</p:commandButton>
+							</h:panelGrid>
+
+						</h:form>
+					</p:outputPanel>
+				</p:dialog>
+
+
+				<p:dialog id="sendeAngebot"
+					header="#{userSotivitiesMBean.selectedSotivity.title} - Angebot bearbeiten"
+					widgetVar="sendeAngebotDialog" modal="true" resizable="false">
+					<p:outputPanel style="text-align:left;" layout="block">
+						<h:form id="send" prependId="false">
+							<h:panelGrid columns="1" style="width:100%;text-align:left">
+
+								<p:outputLabel for="comment" value="Kommentar" />
+								<p:inputTextarea rows="6" cols="33" id="comment"
+									value="#{userSotivitiesMBean.offerComment}" maxlength="300"
+									autoResize="false" />
+
+								<p:outputPanel>
+									<p:commandButton icon="ui-icon-mail-closed"
+										action="#{userSotivitiesMBean.editOffer}" update=":tableForm"
+										oncomplete="sendeAngebotDialog.hide();" value="Speichern">
+									</p:commandButton>
+									
+									<p:commandButton icon="ui-icon-mail-closed" rendered="false"
+										action="#{userSotivitiesMBean.withdrawOffer}" update=":tableForm"
+										oncomplete="sendeAngebotDialog.hide();" value="Angebot zurückziehen">
+									</p:commandButton>
+
+									<p:commandButton icon="ui-icon-closethick"
+										oncomplete="sendeAngebotDialog.hide();" value="Abbrechen">
+									</p:commandButton>
+								</p:outputPanel>
+							</h:panelGrid>
+
+						</h:form>
+					</p:outputPanel>
+				</p:dialog>
+
+
+				<p:dialog id="showContactinfo"
+					header="#{userSotivitiesMBean.selectedSotivity.title} - Kontaktinformationen"
+					widgetVar="showContactinfoDialog" modal="false" resizable="false">
+					<p:outputPanel style="text-align:center;" layout="block">
+						<h:form>
+							<h:panelGrid columns="2"
+								style="margin:5px;width:100%;text-align:left">
+								<span
+									class="ui-icon #{userSotivitiesMBean.selectedSotivity.user.trusted == true ? 'ui-icon-circle-check' : 'ui-icon-alert'}"
+									title="#{userSotivitiesMBean.selectedSotivity.user.trusted == true ? 'vertrauenswürdig' : 'nicht verifiziert'}" />
+								<h:outputText style="font-weight:bold"
+									value="#{userSotivitiesMBean.selectedSotivity.user.firstname} #{userSotivitiesMBean.selectedSotivity.user.lastname} (#{userSotivitiesMBean.selectedSotivity.user.nickname})"></h:outputText>
+								<span class="ui-icon ui-icon-mail-closed" title="E-Mail" />
+								<h:outputLink value="mailto:#{userSotivitiesMBean.selectedSotivity.user.email}"><h:outputText
+									value="#{userSotivitiesMBean.selectedSotivity.user.email}" /></h:outputLink>
+								<span class="ui-icon ui-icon-person" title="Telefon" />
+								<h:outputText
+									value="#{userSotivitiesMBean.selectedSotivity.user.tel}" />
+								<h:outputText value=""/><h:outputText value=""/>
+								<span class="ui-icon ui-icon-home" title="Sotivity Adresse" />
+									<h:outputText
+										value="#{userSotivitiesMBean.selectedSotivity.address.street}" />
+									<h:outputText value=""/>
+										<h:outputText
+										value="#{userSotivitiesMBean.selectedSotivity.address.zip} #{userSotivitiesMBean.selectedSotivity.address.place}" />
+							</h:panelGrid>
+
+							<p:commandButton icon="ui-icon-mail-closed"
+								oncomplete="showContactinfoDialog.hide()"
+								value="Fenster schließen">
+							</p:commandButton>
+						</h:form>
+					</p:outputPanel>
+				</p:dialog>
+				
+				
+				<p:dialog id="createFacebookEvent"
+					header="#{userSotivitiesMBean.selectedSotivity.title} - Facebook Event erstellen"
+					widgetVar="createFacebookEventDialog" modal="true" resizable="false">
+					<p:outputPanel style="text-align:center;width:500px" layout="block">
+						<h:form>
+						<p:messages id="messages" showDetail="true" autoUpdate="true" />  
+						
+							<p>
+								<h:outputText
+									value="Wenn du willst, kannst du deine Sotivity als Event auf unserer Wiener Helden Facebook Seite erstellen. Damit erreichst du eine größere Anzahl an Helfern, und dir wird schneller geholfen." />
+							</p>
+
+								<p:commandButton id="fb" value="Event erstellen"
+									icon="ui-icon-fb"
+									action="#{userSotivitiesMBean.postOnFacebook}"
+									rendered="#{soti.done == false}">
+								</p:commandButton>
+								<p:commandButton icon="ui-icon-close"
+									oncomplete="createFacebookEventDialog.hide()"
+									value="Fenster schließen" update=":tableForm">
+								</p:commandButton>
+						</h:form>
+					</p:outputPanel>
+				</p:dialog>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

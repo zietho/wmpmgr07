@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wh="http://java.sun.com/jsf/composite/wh"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="template.xhtml">
+		<ui:define name="content">
+			<script src="http://maps.google.com/maps/api/js?sensor=false"
+				type="text/javascript" />
+			<f:view>
+				<p:layout style="min-width:400px;min-height:200px;" id="layout">
+					<p:layoutUnit position="west" resizable="true" size="200"
+						minSize="40" maxSize="200" id="first">
+						<wh:sotivityContainer columns="1"
+							sotivityList="#{mainLoggedInMBean.getAllSotivities()}"
+							size="tiny" />
+					</p:layoutUnit>
+
+					<p:layoutUnit position="center">
+						<div id="contentsWrapper">
+							<div id="contents">
+								<h:form id="test" name="test">
+									<h2>
+										Sotivity <em>Karte</em>
+									</h2>
+
+									<p:gmap id="gmap" center="48.2088,16.3726" zoom="12"
+										type="ROADMAP" style="width:99%;height:400px"
+										model="#{mainLoggedInMBean.allSotivityModel}" widgetVar="map">
+										<p:ajax event="overlaySelect"
+											listener="#{mainLoggedInMBean.onMarkerSelect}"/>
+
+										<p:gmapInfoWindow>
+											<p:outputPanel
+												style="text-align:center;display:block;margin:auto:">
+												<div class="mapSotivityDetails">
+													<h3>
+														<h:outputText value="#{mainLoggedInMBean.selectedSotivity.title}"/>
+													</h3>
+													<h:graphicImage url="../resources/img/category/#{mainLoggedInMBean.selectedSotivity.sotivityCategories.toArray()[0].id}.jpg"/>
+													<ul>
+														<li><h:outputText
+																value="#{mainLoggedInMBean.selectedSotivityDuration}" />
+														</li>
+														<li><h:outputText
+																value="#{mainLoggedInMBean.selectedSotivity.dateEnd}" />
+														</li>
+														<li>
+															<h:commandLink value="Details" action="#{sotivityDetailsMBean.init(mainLoggedInMBean.selectedSotivity.id)}"/>
+														</li>
+													</ul>
+													<strong>Benötigte Skills</strong>
+													<p:dataList
+																value="#{mainLoggedInMBean.selectedSotivitySkills}"
+																var="skill" itemType="disc" styleClass="mapSotivitySkills">  
+														    	#{skill.title}  
+															</p:dataList>
+												</div>
+											</p:outputPanel>
+										</p:gmapInfoWindow>
+									</p:gmap>
+
+									<h2>
+										Meine <em>Details</em>
+									</h2>
+
+								</h:form>
+
+								<wh:sotivityContainer size="my" columns="2"
+									emptyMessage="Derzeit keine eigenen Sotivities..."
+									sotivityList="#{userSotivitiesMBean.getUserSotivities()}" />
+
+								<h2>
+									Sotivity <em>Erfolgsgeschichten</em>
+								</h2>
+								<p>
+									Vielen Menschen wurde schon durch unsere Plattform geholfen!
+									Werden Sie teil dieses Netzwerks und helfen Sie ihren Nachbarn.
+									Werden auch sie ein <em>Wiener Held</em>!
+								</p>
+								<p>
+									Gruppensotivities sind ein guter Einstieg in unsere Plattform.
+									<h:link outcome="search">Finden Sie passende <em>Sotivities</em>.</h:link>
+								</p>
+							</div>
+						</div>
+						<div id="additional">
+							<!--  Side Navigation -->
+							<div id="helper">
+								<h:outputText value="Heute wurde bereits "
+									styleClass="helperCountPre" />
+								<h:outputText value="20" styleClass="helperCountNumber" />
+								<h:outputText value=" Mitgliedern geholfen!"
+									styleClass="helperCountSuffix" />
+							</div>
+							<wh:userInfoNavigation />
+						</div>
+					</p:layoutUnit>
+				</p:layout>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

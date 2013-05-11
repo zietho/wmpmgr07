@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="template.xhtml">
+		<ui:define name="content">
+			<f:view>
+				<p:layout style="min-width:400px;min-height:1500px;" id="layout">
+					<!--  Navigation Pane -->
+					<p:layoutUnit position="west" resizable="true" size="200"
+						minSize="40" maxSize="200">
+						<!--  Side Navigation -->
+						<ul id="sideNavigation">
+							<li><h:outputLink value="#generalData">
+									<h:outputText value="Grunddaten" />
+								</h:outputLink></li>
+							<li><h:outputLink value="#keyData">
+									<h:outputText value="Eckdaten" />
+								</h:outputLink></li>
+							<li><h:outputLink value="#skillData">
+									<h:outputText value="Skills" />
+								</h:outputLink></li>
+						</ul>
+					</p:layoutUnit>
+					<!--  Contents -->
+					<p:layoutUnit position="center">
+
+						<h:form id="sotivityform" prependId="false">
+
+							<h1>
+								Sotivity <em> <h:outputText value="#{msg.createSotivity}" />
+								</em>
+							</h1>
+
+							<div class="formBlock">
+								<fieldset>
+									<legend id="#generalData">
+										<h:outputText value="#{msg.baseData}" />
+									</legend>
+									<!--  Title -->
+									<div>
+										<h:outputLabel for="sbTitle" value="Was?" />
+										<h:outputText styleClass="labelDescription"
+											value="Geben Sie hier den gew&uuml;nschten Namen der Sotivity ein -z.B. Suche Hilfe beim Ausmalen meiner neuen Wohnung" />
+										<h:inputText value="#{sotivityMBean.title}" id="sbTitle"
+											styleClass="clear" required="true"
+											requiredMessage="Wir benötigen einen Titel." maxlength="50" />
+										<p:message for="sbTitle" />
+
+									</div>
+									<!--  Category -->
+									<div>
+										<h:outputLabel for="category" value="Kategorie" />
+										<h:outputText styleClass="labelDescription"
+											value="Damit man die Sotivity leichter findet, w&auml;hlen Sie nun eine passende Kategorie aus:" />
+										<p:selectOneMenu id="category"
+											value="#{sotivityMBean.selectedCategory}">
+											<f:selectItems value="#{sotivityMBean.categoryList}" />
+										</p:selectOneMenu>
+										<p:message for="category" />
+									</div>
+									<!--  Description -->
+									<div>
+										<h:outputLabel for="description" value="Kurzbeschreibung" />
+										<h:outputText styleClass="labelDescription"
+											value="Geben Sie hier den gew&uuml;nschten Kurzbeschreibungstext der Sotivity ein!" />
+										<p:inputTextarea value="#{sotivityMBean.description}"
+											rows="10" cols="30" counter="counter" maxlength="300"
+											counterTemplate="{0} Zeichen noch frei." autoResize="false"
+											style="width:50em" id="description" />
+										<p:message for="description" />
+										<h:outputText id="counter" />
+									</div>
+									<!--  Visibility -->
+									<div>
+										<h:outputLabel value="Sichtbarkeit" for="visibility" />
+										<h:outputText styleClass="labelDescription"
+											value="Sicherheit - f&uuml;r wen soll die Adresse der Sotivity sichtbar sein? " />
+										<p:selectOneRadio id="visibility" layout="custom"
+											value="#{sotivityMBean.visibility}">
+											<f:selectItem itemLabel="f&uuml;r alle" itemValue="1" />
+											<f:selectItem
+												itemLabel="nur f&uuml;r vertrauensw&uuml;rdige Helfer"
+												itemValue="2" />
+										</p:selectOneRadio>
+										<h:panelGrid columns="2">
+											<p:radioButton id="opt1" for="visibility" itemIndex="0" />
+											<h:outputLabel for="opt1" value="f&uuml;r alle" />
+											<p:radioButton id="opt2" for="visibility" itemIndex="1" />
+											<h:outputLabel for="opt2"
+												value="nur f&uuml;r vertrauensw&uuml;rdige Helfer" />
+										</h:panelGrid>
+									</div>
+									<!--  Visibility -->
+									<div>
+										<h:outputLabel value="Gruppensotivity" for="groupSotivity" />
+										<h:outputText styleClass="labelDescription"
+											value="Soll eine Gruppensotivity erstellt werden bei der mehrere Personen teilnehmen/helfen k&ouml;nnen? " />
+										<p:selectOneRadio id="groupSotivity" layout="custom"
+											value="#{sotivityMBean.groupSotivity}">
+											<f:selectItem itemLabel="Gruppensotivity" itemValue="1" />
+											<f:selectItem itemLabel="normale Sotivity" itemValue="2" />
+										</p:selectOneRadio>
+										<h:panelGrid columns="2">
+											<p:radioButton id="gopt1" for="groupSotivity" itemIndex="0" />
+											<h:outputLabel for="gopt1" value="Gruppensotivity" />
+											<p:radioButton id="gopt2" for="groupSotivity" itemIndex="1" />
+											<h:outputLabel for="gopt2" value="normale Sotivity" />
+										</h:panelGrid>
+									</div>
+									<!-- Date -->
+									<div>
+										<h:outputLabel value="Bis Wann?" for="date" />
+										<h:outputText styleClass="labelDescription"
+											value="Geben Sie hier den Termin ein, an welchem die Sotivity beendet werden soll"
+											id="date" />
+										<p:calendar value="#{sotivityMBean.dateEnd}"
+											id="popupButtonCal" showOn="button" pattern="dd.MM.yyyy" />
+										<p:message for="popupButtonCal" />
+									</div>
+									<!-- Duration -->
+									<div>
+										<h:panelGrid id="sliderGrid">
+											<h:outputLabel value="Wie lange dauert die Durchf&uuml;hrung?"
+												for="durationLabel" />
+											<h:outputText styleClass="labelDescription"
+												value="Geben Sie hier die Dauer (in Minuten) an, wie viel Zeit die Sotivity ungef&auml;hr in Anspruch nimmt"
+												id="durationLabel" />
+											<h:inputText value="#{sotivityMBean.duration}" id="duration"
+												styleClass="clear" required="true"
+												requiredMessage="Wir benötigen eine Dauer." maxlength="50" >
+												<p:ajax event="keyup" update="sliderMinutes"/>
+											</h:inputText>
+											<br /> <br />
+
+											<p:slider for="duration" step="15" maxValue="600">
+												<p:ajax event="slideEnd" listener="#{sotivityMBean.formatDuration}" update="sliderGrid"/>
+											</p:slider>
+											
+											<h:outputText id="sliderMinutes" value="#{sotivityMBean.formattedDuration}" /> 
+											
+											<p:message for="duration" />
+										</h:panelGrid>
+									</div>
+								</fieldset>
+								<fieldset>
+									<legend id="keyData">
+										<h:outputText value="Eckdaten" />
+									</legend>
+									<!-- Location  -->
+									<div>
+										<h:outputLabel value="Wo?" for="street" />
+										<h:outputText styleClass="labelDescription"
+											value="Geben Sie hier den Strassennamen (inkl. Hausnummer) ein -z.B. Karlsplatz 4 " />
+										<h:inputText value="#{sotivityMBean.street}" id="street"
+											required="true" requiredMessage="Wir benötigen eine Straße."
+											maxlength="100" />
+										<p:message for="street" />
+										<h:outputText styleClass="labelDescription"
+											value="Geben Sie hier die Postleitzahl ein -z.B. 1040 " />
+										<h:inputText id="Postleitzahl" value="#{sotivityMBean.zip}"
+											required="true"
+											requiredMessage="Wir benötigen eine Postleitzahl."
+											validatorMessage="Ungültiges Postleitzahlenformat"
+											maxlength="4" minlength="4">
+											<f:validateRegex pattern="^1[0-9]{3}" />
+										</h:inputText>
+										<p:message for="Postleitzahl" />
+										<h:outputText value="Geben Sie hier den Ort ein -z.B. Wien "
+											styleClass="labelDescription" />
+										<h:inputText value="#{sotivityMBean.place}" required="true"
+											requiredMessage="Wir benötigen einen Ort." maxlength="100"
+											id="place" />
+										<p:message for="place" />
+									</div>
+								</fieldset>
+								<fieldset>
+									<legend id="skillData">
+										<h:outputText value="Skills" />
+									</legend>
+									<!-- Location  -->
+									<div>
+										<h:outputLabel for="skillDescription" value="Ben&ouml;tigte Skills" />
+										<h:outputText styleClass="labelDescription"
+											value="W&auml;hlen Sie hier die gew&uuml;nschten Skills, die man f&uuml;r die Sotivity ben&ouml;tigt, aus!" />
+										<p:selectManyCheckbox id="skillList" 
+											value="#{sotivityMBean.selectedSkills}"
+											layout="pageDirection">
+											<f:selectItems value="#{sotivityMBean.skillList}" />
+										</p:selectManyCheckbox>
+										<br />
+										<h:outputText styleClass="labelDescription"
+											value="Geben Sie hier die gew&uuml;nschten Skills, die man f&uuml;r die Sotivity ben&ouml;tigt, ein!" />
+										<p:inputTextarea id="skillDescription"
+											value="#{sotivityMBean.description}" rows="10" cols="30"
+											counter="skillCounter" maxlength="300"
+											counterTemplate="{0} Zeichen noch frei." autoResize="false"
+											style="width:50em" />
+										<p:message for="skillDescription" />
+										<h:outputText id="skillCounter" />
+									</div>
+									
+									<div>
+										<p:commandButton type="reset" value="Zur&uuml;cksetzen" />
+										<p:commandButton id="sotBtn" value="Sotivity erstellen" rendered="#{sotivityMBean.changeMode == false}" 
+											action="#{sotivityMBean.createSotivity}" />
+										<p:commandButton id="sotUpdateBtn" value="Sotivity &auml;ndern"  rendered="#{sotivityMBean.changeMode == true}"
+											action="#{sotivityMBean.updateSotivity}" />
+									</div>
+								</fieldset>
+							</div>
+						</h:form>
+
+					</p:layoutUnit>
+				</p:layout>
+
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

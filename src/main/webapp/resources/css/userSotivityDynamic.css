@@ -1,0 +1,19 @@
+.sotiOwned.ui-panel .ui-panel-titlebar{ background-color: #ffffcc !important;
+                background-image: none !important;
+                color: #000000 !important;
+                }
+
+.userSotivities.sotiOffer .ui-panel-titlebar .ui-panel-title{ background-color: #ddddff !important;
+                background-image: none !important;
+                color: #000000 !important;
+                }
+                
+.userSotivities.sotiDone .ui-panel-titlebar .ui-panel-title{ background-color: #ccffcc !important;
+                background-image: none !important;
+                color: #000000 !important;
+                }
+                
+.userSotivities.sotiExpired .ui-panel-titlebar .ui-panel-title{ background-color: #ffdddd !important;
+                background-image: none !important;
+                color: #000000 !important;
+                }

@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="template.xhtml">
+		<ui:define name="content">
+			<f:view>
+				<p:layout style="min-width:400px;min-height:1500px;" id="layout">
+					<!--  Navigation Pane -->
+					<p:layoutUnit position="west" resizable="true" size="200"
+						minSize="40" maxSize="200">
+						<!--  Side Navigation -->
+						<ul id="sideNavigation">
+							<li><h:outputLink value="moderatorSotivities.xhtml">
+									<h:outputText value="Sotivities" />
+								</h:outputLink></li>
+							<li><h:outputLink value="moderatorUsers.xhtml">
+									<h:outputText value="Benutzer" />
+								</h:outputLink></li>
+						</ul>
+					</p:layoutUnit>
+					<!--  Contents -->
+					<p:layoutUnit position="center">
+						<h1>
+							<h:outputText value="Sotivities Bearbeiten" />
+						</h1>
+						<h:form id="sotivityForm">
+							<p:dataTable id="multiSotivity" var="sotivity"
+								value="#{moderatorMBean.sotivityModel}" paginator="true"
+								rows="15" selection="#{moderatorMBean.selectedSotivities}"
+								editable="true" widgetVar="sotivityTable"
+								eptyMessage="Keine Benutzer mit den angegebenen Kriterien"
+								filteredValue="#{moderatorMBean.filteredSotivities}">
+								
+								<f:facet name="header">
+										<p:inputText id="globalFilter" onkeyup="sotivityTable.filter()" style="width:150px" />
+								</f:facet>
+								
+								<p:ajax event="rowEdit" listener="#{moderatorMBean.onSotivityEdit}"/>
+								<p:ajax event="rowEditCancel"
+									listener="#{moderatorMBean.onSotivityCancel}"/>
+
+								<p:column selectionMode="multiple" style="width:18px" />
+								<p:column headerText="Titel" filterBy="#{sotivity.title}"
+									sortBy="#{sotivity.title}">  
+	           						#{sotivity.title}  
+						        </p:column>
+								<p:column headerText="Erstellt von" filterBy="#{sotivity.user.nickname}" sortBy="#{sotivity.user.nickname}">  
+	           						#{sotivity.user.nickname}  
+	       						</p:column>
+								<p:column headerText="Erstellt am" filterBy="#{sotivity.dateCreated}" sortBy="#{sotivity.dateCreated}">  
+	           						#{sotivity.dateCreated}  
+	       						</p:column>
+								<p:column headerText="Endet am" filterBy="#{sotivity.dateEnd}" sortBy="#{sotivity.dateEnd}">  
+	           						#{sotivity.dateEnd}  
+	       						</p:column>
+	       						
+	       						<p:column filterBy="#{sotivity.done}" sortBy="#{sotivity.done}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{sotivity.done}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:selectOneMenu value="#{sotivity.done}" style="width:60px">
+												<f:selectItem itemLabel="Ja" itemValue="true" />
+												<f:selectItem itemLabel="Nein" itemValue="false" />
+											</p:selectOneMenu>
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column>
+									<p:rowEditor />
+								</p:column>
+	       						
+								<f:facet name="footer">
+									<p:commandButton id="multiViewButton" value="View"
+										icon="ui-icon-search" update=":sotivityForm:displayMulti"
+										oncomplete="multiSotivityDialog.show()" />
+									<p:commandButton id="closeSotivity" value="Close"
+										icon="ui-icon-person"
+										action="#{moderatorMBean.setSotivityDone(true)}"
+										update=":sotivityForm">
+									</p:commandButton>
+									<p:commandButton id="reopenSotivity" value="Reopen"
+										icon="ui-icon-person"
+										action="#{moderatorMBean.setSotivityDone(false)}"
+										update=":sotivityForm">
+									</p:commandButton>
+									<p:commandButton id="deleteUser" value="Delete"
+										icon="ui-icon-person"
+										action="#{moderatorMBean.deleteSotivity}" update=":sotivityForm">
+									</p:commandButton>
+								</f:facet>
+								
+							</p:dataTable>
+
+							<p:dialog id="multiDialog" header="Sotivity Detail"
+								widgetVar="multiSotivityDialog" height="300" showEffect="fade"
+								hideEffect="explode">
+								<p:dataList id="displayMulti"
+									value="#{moderatorMBean.selectedSotivities}"
+									var="selectedSotivity">  
+            						Titel: #{selectedSotivity.title}, date created: #{selectedSotivity.dateCreated}  
+        						</p:dataList>
+							</p:dialog>
+						</h:form>
+					</p:layoutUnit>
+				</p:layout>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

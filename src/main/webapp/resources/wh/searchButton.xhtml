@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+
+	<composite:attribute name="value" targets="searchField" required="true" />
+	<composite:attribute name="action" targets="searchButton"
+		required="true" />
+	<composite:attribute name="extended" type="java.lang.Boolean" />
+
+</composite:interface>
+
+<composite:implementation>
+	<p:inputText id="searchField" value="#{cc.attrs.value}" />
+	<p:watermark for="searchField" value="Suche nach Sotivities..." />
+	<p:commandButton id="searchButton" icon="ui-icon-search"
+		label="Sotivity suchen" />
+
+	<p:commandButton value="Erweiterte Suche..." onclick="panel.toggle()"
+		rendered="#{cc.attrs.extended}" />
+	<p:panel id="extendedSearch" toggleable="true" collapsed="true"
+		widgetVar="panel" rendered="#{cc.attrs.extended}">
+		<p:calendar mode="inline" id="inlineCal" />
+
+		<p:outputLabel value="Kategorien:" for="categories" />
+		<p:selectManyCheckbox id="categories"
+			value="#{searchMBean.selectedCategories}" layout="pageDirection">
+			<f:selectItems  value="#{searchMBean.categories}" var="cat" itemLabel="#{cat.title}" />
+		</p:selectManyCheckbox>
+	</p:panel>
+</composite:implementation>
+
+</html>

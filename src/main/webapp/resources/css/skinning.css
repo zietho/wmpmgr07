@@ -1,0 +1,23 @@
+/* Skinning */
+
+.ui-layout-unit-content {
+	background-color: transparent;
+	
+}
+
+ui-layout-unit{
+	background-color: transparent;
+}
+
+.ui-layout-center, .ui-layout-pane, .ui-layout-pane-center{
+	background-color: transparent;
+}
+
+.ui-widget{
+	
+}
+
+
+.ui-datalist-content{
+	border:0px; 
+}

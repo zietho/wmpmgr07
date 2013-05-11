@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Wiener Helden</title>
+	<meta http-equiv="Content-Type"
+		content="application/xhtml+xml; charset=utf-8" />
+	<meta name="description" content="Für Wien" />
+	<meta name="keywords" content="Wien Sozial Hilfe" />
+	<meta name="language" content="de-AT" />
+
+	<!--  CSS includes by JSF EL-->
+	<h:outputStylesheet library="css" name="core.css" target="head" />
+	<h:outputStylesheet library="css" name="fonts.css" target="head" />
+	<h:outputStylesheet library="css" name="skinning.css" target="head" />
+	<h:outputStylesheet library="css" name="wienerhelden.css" target="head" />
+	<h:outputStylesheet library="css" name="workflow.css" target="head" />
+	<h:outputStylesheet library="css" name="userSotivitiesDynamic.css"
+		target="head" />
+
+</h:head>
+<h:body>
+	<f:view>
+		<h:form id="toolbar">
+			<p:toolbar id="navigation" size="35">
+				<p:toolbarGroup align="left">
+
+					<h:link outcome="main?faces-redirect=true"
+						rendered="#{empty userMBean.user}">
+						<h:graphicImage name="wh.png" library="img" width="150"
+							height="35px" />
+					</h:link>
+
+					<h:link outcome="mainLoggedIn?faces-redirect=true"
+						rendered="#{not empty userMBean.user}">
+						<h:graphicImage name="wh.png" library="img" width="150"
+							height="35px" />
+					</h:link>
+
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:outputPanel styleClass="loginPanel" id="loginPanel"
+						rendered="#{empty userMBean.user}">
+						<p:outputPanel styleClass="groupedInput">
+<!-- 							<p:outputLabel for="nickname" value="Username" /> -->
+							<p:watermark for="nickname" value="Username..." /> 
+							<p:inputText id="nickname" value="#{loginMBean.nickname}"
+								label="nickname" maxlength="20">
+							</p:inputText>
+						</p:outputPanel>
+						<p:outputPanel styleClass="groupedInput">
+<!-- 							<p:outputLabel for="password" value="Passwort" /> -->
+							<p:watermark for="password" value="Passwort..." /> 
+							<p:password id="password" value="#{loginMBean.password}"
+								label="Password" maxlength="50" />
+						</p:outputPanel>
+						<p:commandButton id="submit" update="loginPanel"
+							value="Login" action="#{loginMBean.submit}" />
+					</p:outputPanel>
+
+					<p:outputPanel id="userMenu" rendered="#{not empty userMBean.user}">
+						<p:commandButton action="search?faces-redirect=true" value="Suche"
+							icon="ui-icon-search" />
+						<p:commandButton action="#{loginMBean.goToCreateSotivity}"
+							value="Sotivity anlegen" icon="ui-icon-plusthick" />
+						<p:menuButton id="menuButton"
+							value="#{userMBean.firstname} #{userMBean.lastname}">
+							<p:menuitem value="Hauptseite"
+								action="mainLoggedIn?faces-redirect=true" />
+							<p:menuitem value="Mein Profil"
+								action="userProfile?faces-redirect=true" />
+							<p:menuitem value="Meine Sotivities"
+								action="userSotivities?faces-redirect=true" />
+							<p:menuitem value="Suche Sotivities"
+								action="search?faces-redirect=true" />
+							<p:menuitem value="Neue Sotivity"
+								action="sotivity?faces-redirect=true" />
+							<p:menuitem value="Abmelden" action="#{userMBean.logout}"
+								update="loginPanel, userMenu" />
+							<p:menuitem value="Moderator: Benutzer"
+								action="moderatorUsers?faces-redirect=true"
+								rendered="#{userMBean.user.moderator}" />
+							<p:menuitem value="Moderator: Sotivities"
+								action="moderatorSotivities?faces-redirect=true"
+								rendered="#{userMBean.user.moderator}" />
+						</p:menuButton>
+					</p:outputPanel>
+
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+	</f:view>
+	<p:messages id="messages" showDetail="true" autoUpdate="true"
+		closable="true">
+		<p:effect type="fade" event="load" delay="2500" />
+	</p:messages>
+	<ui:insert name="content">
+    	My content
+    </ui:insert>
+</h:body>
+</html>

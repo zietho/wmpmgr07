@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:wh="http://java.sun.com/jsf/composite/wh"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="template.xhtml">
+		<ui:define name="content">
+			<script src="http://maps.google.com/maps/api/js?sensor=false"
+				type="text/javascript" />
+			<f:view>
+				<p:layout style="min-width:400px;min-height:200px;" id="layout">
+					<p:layoutUnit position="west" resizable="true" size="260"
+						minSize="40" maxSize="260" id="first">
+						<wh:userInfoNavigation />
+					</p:layoutUnit>
+					<p:layoutUnit position="center">
+						<h1>
+							Erstes <em>Mal?</em>
+						</h1>
+						<ol>
+							<li>Startseite - Screenshot der Startseite + Erklärung der einzelnen Elemente</li>
+							<li>Profil - Welche Einstellungen können dort vorgenommen werden und wie wirken sich diese auf die anderen Masken aus</li>
+							<li>Erstellen - Wie kann man eine Sotivity erstellen</li>
+							<li>Angebot - Wie kann man bei einer Sotivity ein Angebot einreichen?</li>
+							<li>Verwalten - Wie kann man eigene Sotivities und Angebote verwalten</li>
+						</ol>
+						<h:outputLink value="mainLoggedIn.xhtml">
+							<h:outputText value="zur Startseite" />
+						</h:outputLink>
+					</p:layoutUnit>
+				</p:layout>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

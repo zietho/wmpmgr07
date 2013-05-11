@@ -1,0 +1,141 @@
+@import url("http://fonts.googleapis.com/css?family=Droid+Sans:400,700");
+@import url("http://fonts.googleapis.com/css?family=Droid+Sans+Mono");
+@import url("http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic");
+
+
+body , .ui-widget{
+	font-family: 'Droid Sans', sans-serif;
+	font-size: 1.2em;
+	color: #4E4F56;
+	
+}
+
+
+.ui-widget {
+	font-family: 'Droid Sans', sans-serif;
+	font-size: 0.8em;
+}
+
+.ui-widget > * {
+	font-family: 'Droid Sans', sans-serif;
+	size: 0.8em;
+}
+
+
+.ui-widget .formElementHeadline{
+	font-size: 1.6em;
+}
+
+
+
+.ui-fieldset-legend{
+	font-family: 'Droid Sans Mono', sans-serif;
+	font-size:1.2em;
+}
+
+
+/* FORMS ##########  */
+
+form{
+	color: #4E4F56;
+}
+
+.formBlock legend{
+	font-size: 2.25em;
+	color: #000000;
+}
+
+.formBlock fieldset > div > label{
+	font-size:1.75em;
+}
+
+.formBlock input, textarea, select {
+	float:left;
+	display:block;
+}
+
+
+/* Headlines ##########  */
+
+h1, h2{
+	font-family:'Droid Serif', sans-serif;
+	font-weight:normal;
+	color: #000000;
+}
+
+h1{
+	font-size:3em;
+}
+
+h2{
+	font-size:2em;
+}
+
+h1 em{
+	font-style: normal;
+	text-decoration:none;
+	color: #7cc50a;
+}
+
+h2{
+	
+}
+
+
+ul#sideNavigation li{
+	font-family: 'Droid Sans', sans-serif;
+	font-size:1.75em;
+	
+}
+
+ul#sideNavigation a{
+	text-decoration:none;
+	color:#000000;
+}
+
+/* mainLoggedIn.xhtml ################ */
+
+
+/* color schema */
+
+p.description-dark, p.address-dark, p.dark, p.agb-dark, h1.dark, h2.dark{
+	color:#000000;
+}
+
+p.description-bright, p.address-bright, p.bright, p.agb-bright, h1.bright, h2.bright{
+	color:#FFFFFF;
+}
+
+span.highlight-dark, span.highlight-bright{
+	color: #7cc50a;
+}
+
+/* form */
+
+#registerForm dl label{
+	color:#FFFFFF;
+}
+
+/* map sotivity details */
+
+.mapSotitvityDetails h1{
+	font-size:0.8em;
+	font-family: 'Droid Sans',sans-serif;
+	color: #000000;
+}
+
+.mapSotivityDetails ul li{
+	color: #4E4F56;
+}
+
+.mapSotivityDetails h3{
+	color: #7cc50a;
+	margin:0px;
+	margin-bottom:10px;
+}
+
+.mapSotivityDetails strong{
+	margin:10px 0 10px 0;
+	overflow:auto;
+	display:block;
+}

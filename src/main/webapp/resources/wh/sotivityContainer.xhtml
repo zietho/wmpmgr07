@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:wh="http://java.sun.com/jsf/composite/wh"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+
+	<composite:attribute name="sotivityList" type="java.util.List" required="true" />
+	<composite:attribute name="emptyMessage" type="String" default="Keine Sotivitys..." />
+	<composite:attribute name="size" type="String" default="small" />
+	<composite:attribute name="columns" type="Integer" default="3" />
+
+</composite:interface>
+
+<composite:implementation>
+<h:form id="sotContainer" prependId="false">
+	<p:dataGrid columns="#{cc.attrs.columns}" var="sot" value="#{cc.attrs.sotivityList}"
+		rendered="#{not empty cc.attrs.sotivityList}">
+		
+		<wh:sotivitySmall sotivity="#{sot}" rendered="#{cc.attrs.size eq 'small'}" />
+		<wh:sotivityTiny sotivity="#{sot}" rendered="#{cc.attrs.size eq 'tiny'}" />
+		<wh:sotivityMy sotivity="#{sot}" rendered="#{cc.attrs.size eq 'my'}" />
+	</p:dataGrid>
+	<h:outputText rendered="#{empty cc.attrs.sotivityList}"
+		value="#{cc.attrs.emptyMessage}" />
+</h:form>
+</composite:implementation>
+
+</html>

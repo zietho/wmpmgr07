@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="template.xhtml">
+		<ui:define name="content">
+			<script src="http://maps.google.com/maps/api/js?sensor=false"
+				type="text/javascript" />
+			<script type="text/javascript"
+				src="../resources/javascript/mapCodeSovtivityPoint.js" />
+			<style type="text/css">
+div#all {
+	width: 100%;
+}
+
+div#inhalt-1,div#inhalt-2 {
+	float: left;
+}
+</style>
+			<f:view>
+				<p:layout id="top" style="min-width:400px;min-height:600px;" fullpage="true">
+					<p:layoutUnit position="west" resizable="true" size="230"
+						minSize="40" maxSize="230">
+						<!--  Side Navigation -->
+						<!--  Side Navigation -->
+						<ul id="sideNavigation">
+							<li><h:outputLink value="userProfile.xhtml">
+									<h:outputText value="Daten" />
+								</h:outputLink></li>
+							<li><h:outputLink value="userProfilePointsOfInterests.xhtml">
+									<h:outputText value="Orte" />
+								</h:outputLink></li>
+							<li><h:outputLink value="userProfileConnections.xhtml">
+									<h:outputText value="Verbindungen" />
+								</h:outputLink></li>
+						</ul>
+					</p:layoutUnit>
+					<!--  Contents -->
+					<p:layoutUnit position="center">
+						<h1>Verbindungen</h1>
+					</p:layoutUnit>
+				</p:layout>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,144 @@
+.ui-layout-pane {
+    border: 0;
+}
+
+.loginPanel label,input {
+	display: block;
+}
+
+.loginPanel .groupedInput {
+	float: left;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+#searchForm input {
+	display: inline;
+}
+
+h2 em,p em {
+	color: rgb(124,197,20);
+	font-style:normal;
+}
+
+#layout > *{
+	background-color: transparent;
+}
+
+.ui-widget .ui-icon-fb {
+	background-image: url(#{resource['img:Fb_icon.png']});
+	background-size: 16px 16px;
+	border-radius: 0px;
+}
+
+.ui-growl-item {
+	top: 75px; !important
+}
+
+
+/* mainLoggedIn.xhtml */
+
+.mapSotivityDetails{
+	text-align:left;
+	display:block;
+	margin:0px;
+}
+
+.mapSotivityDetails span{
+	display:block;
+}
+
+.mapSotivityDetails img{
+	float:left;
+}
+
+.mapSotivityDetails p{
+	margin-left:0px;
+}
+
+.mapSotivityDetails > ul{
+	overflow:auto;
+	list-style-type: none;
+	padding: 10px 0 10px 15px;
+	margin:0px;
+	
+}
+
+
+.mapSotivityDetails li, ul.mapSotivitySkills li{
+	padding:2px 0 2px 0;
+	margin:0px;
+}
+
+.mapSotivitySkills, ul.ui-datalist-data{
+	clear:both;
+	margin:0px;
+	padding:0px 0px 0px 15px;
+	list-style-type: disc;
+}
+
+
+/* SOTIVITY DETAILS */
+
+#sotivityDetails dl {
+	padding: 0.5em;
+	float: left;
+	width:100%;
+}
+
+#sotivityDetails dt {
+	float: left; 
+	clear: left;
+	width: 200px;
+	text-align: left;
+	font-weight: bold;
+}
+
+#sotivityDetails dd {
+	margin: 0 0 0 210px; 
+	padding:0 0 1em 0;
+}
+
+#sotivityDetails ul{
+	overflow:auto;
+	padding:0px;
+	padding-left:20px;
+	margin:0px;
+}
+
+#sotivityDetails > div, #sotivityDetails > div > div{
+	margin:0px;
+	padding:0px;
+}
+
+#sotivityDetails ul li{
+	padding:0px;
+	margin:0px;
+}
+
+#sotivityDetails .ui-datalist,#sotivityDetails  .ui-widget{
+	margin:0px;
+	padding:0px;
+	background: none; 
+	border:0px;
+}
+
+#sotivityDetails  .ui-datalist-content,#sotivityDetails  .ui-widget-content{
+	margin:0px;
+	padding:0px;
+	border:0px;
+	background: none; 
+}
+
+#sotivityDetails div{ 
+	border:0px;
+	margin:0px;
+	padding:0px;
+	width:auto;
+	height:auto;
+}
+
+#j_idt50 *{
+	margin:0px;
+	padding:0px;
+}

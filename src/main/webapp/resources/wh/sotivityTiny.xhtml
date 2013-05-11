@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+
+	<composite:attribute name="sotivity" />
+	<composite:attribute name="charLength" type="Integer" default="100" />
+	<!-- 	<composite:attribute name="detailsAction" -->
+	<!-- 		method-signature="java.lang.String action()" /> -->
+
+</composite:interface>
+
+<composite:implementation>
+<div class="tinySotivity">
+	<div class="tinyImage">
+		<h:graphicImage url="../resources/img/category/#{cc.attrs.sotivity.sotivityCategories.toArray()[0].id}.jpg"/>
+	</div>
+	<div class="tinyDetails">
+		<h:outputText value="#{cc.attrs.sotivity.title}" styleClass="tinyTitle" />
+		<h:outputText value="#{cc.attrs.sotivity.address.name}" styleClass="tinyAddress"/>
+		<h:outputText value="#{cc.attrs.sotivity.address.zip}" styleClass="tinyZip"/>
+	</div>
+	<h:outputText value="#{cc.attrs.sotivity.description.length() >= cc.attrs.charLength
+			 ? cc.attrs.sotivity.description.substring(0,cc.attrs.charLength)
+			  : cc.attrs.sotivity.description}" styleClass="tinyDescription" />
+	<hr class="tinySotivitySeparator"/>
+</div>
+</composite:implementation>
+
+</html>

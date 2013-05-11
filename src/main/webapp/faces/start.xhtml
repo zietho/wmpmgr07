@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<link type="text/css" rel="stylesheet" href="themes/bluesky/skin.css" />
+
+</h:head>
+<h:body>
+	<ui:composition prependId="false" template="template.xhtml">
+		<ui:define name="content">
+			<f:view>
+				<center>
+					<h:form id="form">
+						<p></p>
+						<p:commandButton action="main?faces-redirect=true" value="Hauptseite" />
+						<p></p>
+						<a href="http://localhost:8080/WorkflowProject/services/webservice?wsdl">Link
+							zu WSDL</a>
+						<p></p>
+					</h:form>
+				</center>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+    <ui:composition template="template.xhtml">
+        <ui:define name="content">
+            <f:view>
+           <script src="http://maps.google.com/maps/api/js?sensor=false"
+type="text/javascript" />
+			
+                <p:layout style="min-width:400px;min-height:1500px;" id="layout">
+                    <!--  Navigation Pane -->
+                    <p:layoutUnit position="west" resizable="true" size="200"
+                                  minSize="40" maxSize="200">
+                        <!--  Side Navigation -->
+                        <ul id="sideNavigation">
+                            <li><h:outputLink value="#generalData">
+                                <h:outputText value="Grunddaten"/>
+                            </h:outputLink></li>
+                            <li><h:outputLink value="#keyData">
+                                <h:outputText value="Eckdaten"/>
+                            </h:outputLink></li>
+                            <li><h:outputLink value="#skillData">
+                                <h:outputText value="Skills"/>
+                            </h:outputLink></li>
+                        </ul>
+                    </p:layoutUnit>
+                    <!--  Contents -->
+                    <p:layoutUnit position="center" id="sotivityDetails">
+
+                        <h1>
+                            Sotivity <em> Details
+                        </em>
+                        </h1>
+						<p>
+							Sotivity wurde von
+							<em>
+								<h:outputText value="#{sotivityDetailsMBean.sotivity.user.nickname}"/>
+							</em>
+							am
+							<em>
+								<h:outputText value="#{sotivityDetailsMBean.sotivity.dateCreated}"/>
+							</em>
+							erstellt
+							
+						</p>
+                        <!--  Title -->
+                        <dl>
+                            <dt>Titel</dt>
+                            <dd>
+                            	<h:outputText value="#{sotivityDetailsMBean.sotivity.title}"/>
+                            </dd>
+                            <!--  Category -->
+
+                            <dt>Kategorie</dt>
+                            <dd>
+                                <h:outputText value="#{sotivityDetailsMBean.sotivity.sotivityCategories.toArray()[0].title}"/>
+                            </dd>
+                            <!--  Description -->
+                            <dt>Beschreibung</dt>
+                            <dd>
+                                <h:outputText value="#{sotivityDetailsMBean.sotivity.description}"/>
+                            </dd>
+
+                            <!--  Visibility -->
+                            <dt>Sichtbarkeit</dt>
+                            <dd>
+                                <h:outputText value="#{sotivityDetailsMBean.sotivity.publicVisible ? true: false}"/>
+                            </dd>
+
+                            <!--  Visibility -->
+                            <dt>Gruppensotivity</dt>
+                            <dd>
+                                <h:outputText value="#{sotivityDetailsMBean.sotivity.groupSotivity ? true: false}"/>
+                            </dd>
+
+                            <!--  Date -->
+                            <dt>Datum</dt>
+                            <dd>
+                                <h:outputText value="#{sotivityDetailsMBean.sotivity.dateEnd}"/>
+                            </dd>
+
+                            <!--  duration -->
+                            <dt>Dauer</dt>
+                            <dd>
+                                <h:outputText value="#{sotivityDetailsMBean.sotivity.duration}"/>
+                            </dd>
+
+
+                        </dl>
+                        <h2 id="keyData">
+                            <h:outputText value="Eckdaten"/>
+                        </h2>
+                        <!-- Location  -->
+                        WO?
+                        <p:gmap center="48.2088,16.3726" zoom="12" type="ROADMAP"
+                                style="width:600px;height:400px"
+                                model="#{sotivityDetailsMBean.mapModel}" />
+
+                        <h2 id="skillData">
+                            <h:outputText value="Skills"/>
+                        </h2>
+                        <!-- skills  -->
+                        <dl>
+                            <dt>Skills</dt>
+                            <dd>
+                                <p:dataList value="#{sotivityDetailsMBean.sotivity.skills}" var="skill">
+                                    #{skill.title}
+                                </p:dataList>
+                            </dd>
+                        </dl>
+                    </p:layoutUnit>
+                </p:layout>
+            </f:view>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>
